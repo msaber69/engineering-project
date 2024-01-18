@@ -1,0 +1,43 @@
+/* UserForm Component Styles */
+
+.user-form {
+    font-family: 'Arial', sans-serif;
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .user-form h1 {
+    color: #007BFF; /* Heading color */
+    text-align: center;
+  }
+  
+  .user-form label {
+    display: block;
+    margin: 10px 0 5px;
+    color: #333;
+  }
+  
+  .user-form input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+  
+  .user-form button {
+    background-color: #007BFF; /* Button background color */
+    color: #fff; /* Button text color */
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  /* Medical Website Specific Styles */
+  
+  /* Add specific styles for a medical context here */
+  

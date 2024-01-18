@@ -1,0 +1,51 @@
+/* styles/Home.css */
+
+.hero {
+    position: relative;
+    height: 100vh;
+    background: url('/Users/msaber/engineering-project/5a19f81552117834eb2554495d63f13b.jpg') center/cover no-repeat; /* Updated property */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  
+  .hero-content {
+    z-index: 1;
+    text-align: center;
+  }
+  
+  .hero h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+  }
+  
+  .hero p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+  }
+  
+  .hero a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+  
+  .hero a:hover {
+    background-color: #0056b3;
+    color: #fff;
+  }
+  
