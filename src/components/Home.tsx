@@ -2,30 +2,29 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Layout from './Layout';
 import '../styles/Home.css';
 
 const Home: React.FC = () => {
     return (
-        <Layout>
             <div className="home">
                 <section className="hero">
                     <div className="overlay"></div>
                     <div className="hero-content">
-                        <h1>Welcome to the ML Project</h1>
-                        <p>Advancing healthcare through machine learning technology.</p>
-                        <Link to="/userform">Get Started</Link>
+                        <h1>Discover Your Mental Health Profile</h1>
+                        <p>Embark on a journey of self-discovery with our quick and insightful mental health questionnaire. 
+                            Start now to gain personalized insights and take a proactive step towards your well-being.</p>
+                        <Link to="/userform">Start now</Link>
                     </div>
                 </section>
 
                 <section className="navigation">
+                    <div><p>hellooo</p></div>
                     {/* Navigation links for About Us, Services, Contact, Products, Articles, and Languages */}
                     {/* Add your logo here */}
                 </section>
 
                 {/* Add content sections for About Us, Services, Contact, Products, Articles */}
             </div>
-        </Layout>
     );
 };
 

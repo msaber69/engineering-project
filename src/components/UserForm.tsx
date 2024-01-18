@@ -1,11 +1,9 @@
 import React from 'react';
-import Layout from './Layout';
 import '../styles/UserForm.css';
 
 
 const UserForm: React.FC = () => {
     return (
-        <Layout>
             <div className="user-form">
                 <h1>User Input Form</h1>
                 <form action="#" method="post">
@@ -20,7 +18,6 @@ const UserForm: React.FC = () => {
                     <button type="submit">Submit</button>
                 </form>
             </div>
-        </Layout>
     );
 };
 

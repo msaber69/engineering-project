@@ -1,5 +1,12 @@
 /* styles/Layout.css */
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
 .layout {
     font-family: 'Arial', sans-serif;
     display: flex;
@@ -22,6 +29,7 @@
     align-items: center;
     z-index: 1; 
   }
+  
   
   .logo {
     font-size: 1.5rem;

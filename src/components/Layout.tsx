@@ -1,5 +1,4 @@
 // components/Layout.tsx
-
 import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Layout.css';
@@ -15,11 +14,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="logo">Your Logo</div>
         <nav>
           <Link to="/">Home</Link>
-          <Link to="/about">About Us</Link>
-          <Link to="/services">Services</Link>
-          <Link to="/products">Products</Link>
-          <Link to="/services">Articles</Link>
-          <Link to="/products">Contact</Link>
+          <Link to="/login">Sign In / Sign Up</Link>
+          <Link to="/contact">Contact Us</Link>
+          <Link to="/help">Help</Link>
           {/* Add more navigation links as needed */}
         </nav>
       </header>
