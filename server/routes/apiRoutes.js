@@ -1,26 +1,16 @@
-// backend/routes/apiRoutes.js
 const express = require('express');
 const router = express.Router();
+const { loadModel, predict } = require('../model/modelHandler'); // Implement model loading and prediction functions
 
-// Example user data (replace this with a database in a real application)
-const users = [
-  { id: 1, username: 'user1', password: 'password1' },
-  { id: 2, username: 'user2', password: 'password2' },
-];
-
-// Route to handle user login
-router.post('/login', (req, res) => {
-  const { username, password } = req.body;
-
-  // Simple authentication logic (replace this with actual authentication)
-  const user = users.find((user) => user.username === username && user.password === password);
-
-  if (user) {
-    // Successful login
-    res.json({ success: true, message: 'Login successful', user });
-  } else {
-    // Failed login
-    res.status(401).json({ success: false, message: 'Invalid username or password' });
+router.post('/predict', async (req, res) => {
+  try {
+    const inputData = req.body; // Get input data from the request
+    const model = await loadModel(); // Load your machine learning model
+    const prediction = predict(model, inputData); // Make predictions
+    res.json({ prediction });
+  } catch (error) {
+    console.error('Prediction error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

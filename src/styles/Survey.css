@@ -1,0 +1,40 @@
+/* styles/Survey.css */
+
+.survey-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .test-info {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .test-buttons {
+    display: flex;
+    flex-direction: column; /* Align buttons vertically */
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .section-buttons {
+    display: flex;
+    flex-direction: column; /* Align buttons vertically */
+    gap: 20px;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+  
+  .question {
+    margin-top: 20px;
+    text-align: center; /* Center text within the div */
+  }
+  
+  .radio-option {
+    margin-top: 10px;
+  }
+  
+  /* Add any additional styles as needed */
+  
