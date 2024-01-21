@@ -11,7 +11,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="layout">
       <header>
-        <div className="logo">Your Logo</div>
+        <img src="/Users/msaber/engineering-project/2401705070794_.pic.jpg" alt="Your Logo" className="logo" />
         <nav>
           <Link to="/">Home</Link>
           <Link to="/login">Sign In / Sign Up</Link>

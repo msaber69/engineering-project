@@ -20,14 +20,15 @@
     top: 0;
     left: 0;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: #fff;
+    background-color: #FFFFFF;
+    color: black;
     padding: 16px;
     text-align: center;
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 1; 
+    border: 0.25px solid black;
   }
   
   
@@ -41,7 +42,7 @@
   }
   
   nav a {
-    color: #fff;
+    color: black;
     text-decoration: none;
     margin: 0 15px;
     font-weight: bold;

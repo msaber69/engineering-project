@@ -1,3 +1,5 @@
+// Survey.tsx
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import questions from '../questions';
@@ -28,8 +30,8 @@ const Survey: React.FC = () => {
         <p>{description}</p>
       </div>
       <div className="test-buttons">
-        <button onClick={() => redirectToTest(section)}>Start</button>
         <span>{`Estimated Time: ${estimatedTime}`}</span>
+        <button className="test-start" onClick={() => redirectToTest(section)}>Start</button>
       </div>
     </div>
   );
@@ -52,6 +54,16 @@ const Survey: React.FC = () => {
 
     return renderTestInfo(section, description, estimatedTime);
   };
+
+  const renderIntroText = () => (
+    <div className="intro-text">
+      <h1>Hello Saber!</h1>
+      <p>
+        Welcome to our mental health assessment. Please select a section below to begin the
+        corresponding test. Your honest responses will help us provide personalized insights.
+      </p>
+    </div>
+  );
 
   const renderQuestionsBySection = (section: string) => {
     const sectionQuestions = questions.filter((question) => question.section === section);
@@ -83,13 +95,15 @@ const Survey: React.FC = () => {
 
   return (
     <div className="survey-container">
+      {renderIntroText()}
+
       <div className="section-buttons">
         {['Test1', 'Test2', 'Test3'].map((section) => renderSectionButton(section))}
       </div>
 
       {currentSection && renderQuestionsBySection(currentSection)}
 
-      <button onClick={() => console.log(answers)}>Submit</button>
+      <button className="survey-submit" onClick={() => console.log(answers)}>Submit</button>
     </div>
   );
 };
