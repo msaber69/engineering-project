@@ -1,26 +1,14 @@
 // Survey.tsx
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import questions from '../questions';
 import '../styles/Survey.css';
 
-interface Answer {
-  [key: string]: string;
-}
 
 const Survey: React.FC = () => {
   const navigate = useNavigate();
-
-  const [currentSection, setCurrentSection] = useState<string | null>(null);
-  const [answers, setAnswers] = useState<Answer>({});
-
-  const handleAnswerChange = (questionId: string, value: string) => {
-    setAnswers((prevAnswers) => ({ ...prevAnswers, [questionId]: value }));
-  };
-
+  
   const redirectToTest = (test: string) => {
-    setCurrentSection(test);
     navigate(`/${test.toLowerCase()}`);
   };
 
@@ -65,34 +53,6 @@ const Survey: React.FC = () => {
     </div>
   );
 
-  const renderQuestionsBySection = (section: string) => {
-    const sectionQuestions = questions.filter((question) => question.section === section);
-
-    return (
-      <div className="sections">
-        <h2>{`Test ${section.charAt(section.length - 1)}: ${section}`}</h2>
-        {sectionQuestions.map((question) => (
-          <div key={question.id} className="question">
-            <p>{question.text}</p>
-            {question.options?.map((option, index) => (
-              <div key={index} className="radio-option">
-                <input
-                  type="radio"
-                  id={`${question.id}-${index}`}
-                  name={question.id}
-                  value={option}
-                  checked={answers[question.id] === option}
-                  onChange={() => handleAnswerChange(question.id, option)}
-                />
-                <label htmlFor={`${question.id}-${index}`}>{option}</label>
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    );
-  };
-
   return (
     <div className="survey-container">
       {renderIntroText()}
@@ -101,9 +61,7 @@ const Survey: React.FC = () => {
         {['Test1', 'Test2', 'Test3'].map((section) => renderSectionButton(section))}
       </div>
 
-      {currentSection && renderQuestionsBySection(currentSection)}
-
-      <button className="survey-submit" onClick={() => console.log(answers)}>Submit</button>
+      <button className="survey-submit" /*onClick={() => console.log(answers)}*/>Submit</button>
     </div>
   );
 };

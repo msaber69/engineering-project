@@ -52,8 +52,9 @@
     margin-top: 20px;
     text-align: center;
   }
-  
+
   .radio-option {
+    display: inline-block;
     margin-top: 10px;
   }
   
@@ -65,3 +66,34 @@
     background-color: #FFFFFF;
     color: #0056B3;
   }
+
+  /* styles/Test1.css */
+
+.test-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10% auto;
+}
+
+.question-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 70%; 
+  margin: 20px 0;
+}
+
+.question {
+  text-align: left;
+}
+
+.options {
+  text-align: center;
+}
+
+
+
+  

@@ -1,34 +1,33 @@
-# app.py
-from flask import Flask, request, jsonify
-from flask_restful import Api, Resource
+from flask import Flask, render_template, request
+import pandas as pd
 from joblib import load
 
 app = Flask(__name__)
-api = Api(app)
 
-# Load models
-adhd_model = load('models/ADHD_BestModel_Oversampling.sav')
-anger_model = load('models/ANGER_BestModel_Oversampling.sav')
-anxiety_model = load('models/ANXIETY_BestModel_Oversampling.sav')
-dep_qids16_model = load('models/DEP_QIDS16_BestModel_Oversampling.sav')
-depression_model = load('models/DEPRESSION_BestModel_Oversampling.sav')
-dissociation_model = load('models/DISSOCIATION_BestModel_Oversampling.sav')
-mania_model = load('models/MANIA_BestModel_Oversampling.sav')
-psychosis_model = load('models/PSYCHOSIS_BestModel_Oversampling.sav')
-somatic_symp_model = load('models/SOMATIC_SYMP_BestModel_Oversampling.sav')
-substance_use_model = load('models/SUBSTANCE_USE_BestModel_Oversampling.sav')
-suicidal_model = load('models/SUICIDAL_BestModel_Oversampling.sav')
+# Load your dataset
+data = pd.read_csv('your_dataset.csv')
 
-class PredictADHD(Resource):
-    def post(self):
-        try:
-            data = request.json  # Assuming JSON data
-            prediction = adhd_model.predict(data['input_data'])
-            return jsonify({'prediction': prediction.tolist()})
-        except Exception as e:
-            return jsonify({'error': str(e)})
+# Load your models
+adhd_model = load('models/adhd_model.sav')
+anger_model = load('models/anger_model.sav')
+anxiety_model = load('models/anxiety_model.sav')
+# ... (repeat for other models)
 
-api.add_resource(PredictADHD, '/predict_adhd')
+@app.route('/')
+def home():
+    return render_template('index.html')
 
-if __name__ == '__main__':
-    app.run(debug=True)
+@app.route('/result', methods=['POST'])
+def result():
+    if request.method == 'POST':
+        # Get user input or any other necessary data
+        # ...
+
+        # Call your scoring function for ADHD
+        scored_data = compute_final_score_ADHD(data, adhd_model)
+
+        # Extract relevant columns from the result
+        result_data = scored_data[['Participant_ID', 'Final_ADHD_score', 'Inattention_scores', 'Hyperactivity_scores']]
+
+        # Pass the result to the template
+        return render_template('result.html', result=result_data.to_html())
