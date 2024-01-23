@@ -23,27 +23,31 @@ const Test1: React.FC = () => {
       }));
   
       const response = await fetch('http://localhost:3001/submitTest', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          testType: 'test1', 
-          responses: responseArray,
-        }),
-      });
-  
-      if (response.ok) {
-        console.log('User responses submitted successfully');
-        const result = await response.json();
-        console.log('Scoring Result:', result);
-      } else {
-        console.error('Failed to submit user responses');
-      }
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                testType: 'test1',
+                responses: responseArray,
+            }),
+        });
+
+        if (response.ok) {
+            console.log('User responses submitted successfully');
+            const result = await response.json();
+            console.log('Scoring Result:', result);
+
+            // Interpret the result and update your UI as needed
+            // For example, you can display the scores in the UI
+            alert(`ADHD Score: ${result.result[0].Final_ADHD_score}`);
+        } else {
+            console.error('Failed to submit user responses');
+        }
     } catch (error) {
-      console.error('Error submitting user responses:', error);
+        console.error('Error submitting user responses:', error);
     }
-  };
+};
   
   
 

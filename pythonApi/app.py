@@ -1,17 +1,19 @@
 from flask import Flask, render_template, request
 import pandas as pd
 from joblib import load
+from ANGER_BestModel_Oversampling import compute_final_score_ADHD
 
 app = Flask(__name__)
 
 # Load your dataset
-data = pd.read_csv('your_dataset.csv')
+data = pd.read_csv('DATASET_ADHD.csv')
 
 # Load your models
-adhd_model = load('models/adhd_model.sav')
-anger_model = load('models/anger_model.sav')
-anxiety_model = load('models/anxiety_model.sav')
+adhd_model = load('ADHD_BestModel_Oversampling.sav')
+anger_model = load('ANGER_BestModel_Oversampling.sav')
+anxiety_model = load('ANXIETY_BestModel_Oversampling.sav')
 # ... (repeat for other models)
+
 
 @app.route('/')
 def home():
@@ -31,3 +33,6 @@ def result():
 
         # Pass the result to the template
         return render_template('result.html', result=result_data.to_html())
+
+if __name__ == '__main__':
+    app.run(debug=True)
