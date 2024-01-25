@@ -1,38 +1,49 @@
 from flask import Flask, render_template, request
-import pandas as pd
-from joblib import load
-from ANGER_BestModel_Oversampling import compute_final_score_ADHD
 
 app = Flask(__name__)
 
-# Load your dataset
-data = pd.read_csv('DATASET_ADHD.csv')
+# ASRS-V1 Scoring Function
+def score_asrs_v1(responses):
+    inattentive_items = [1, 2, 3, 4, 7, 8, 9, 10, 11]
+    hyperactive_motor_items = [5, 6, 12, 13, 14]
+    hyperactive_verbal_items = [15, 16, 17, 18]
 
-# Load your models
-adhd_model = load('ADHD_BestModel_Oversampling.sav')
-anger_model = load('ANGER_BestModel_Oversampling.sav')
-anxiety_model = load('ANXIETY_BestModel_Oversampling.sav')
-# ... (repeat for other models)
+    inattentive_score = sum(responses[i] for i in inattentive_items if responses[i] > 2)
+    hyperactive_motor_score = sum(responses[i] for i in hyperactive_motor_items if responses[i] > 3)
+    hyperactive_verbal_score = sum(responses[i] for i in hyperactive_verbal_items if responses[i] > 3)
 
+    return inattentive_score, hyperactive_motor_score, hyperactive_verbal_score
 
-@app.route('/')
-def home():
-    return render_template('index.html')
+# DSM5-Adult Depression Scoring Function
+def score_dsm5_adult_depression(responses):
+    depression_items = [19, 20]
 
-@app.route('/result', methods=['POST'])
-def result():
+    depression_score = sum(responses[i] for i in depression_items)
+
+    return depression_score
+
+# Example route to handle ASRS-V1 form submission
+@app.route('/asrs_v1', methods=['POST'])
+def asrs_v1():
     if request.method == 'POST':
-        # Get user input or any other necessary data
-        # ...
+        # Assuming you have a form with input names corresponding to question numbers
+        responses = {int(key): int(value) for key, value in request.form.items()}
 
-        # Call your scoring function for ADHD
-        scored_data = compute_final_score_ADHD(data, adhd_model)
+        inattentive_score, hyperactive_motor_score, hyperactive_verbal_score = score_asrs_v1(responses)
 
-        # Extract relevant columns from the result
-        result_data = scored_data[['Participant_ID', 'Final_ADHD_score', 'Inattention_scores', 'Hyperactivity_scores']]
+        return render_template('asrs_result.html', inattentive=inattentive_score,
+                               hyperactive_motor=hyperactive_motor_score, hyperactive_verbal=hyperactive_verbal_score)
 
-        # Pass the result to the template
-        return render_template('result.html', result=result_data.to_html())
+# Example route to handle DSM5-Adult Depression form submission
+@app.route('/dsm5_adult_depression', methods=['POST'])
+def dsm5_adult_depression():
+    if request.method == 'POST':
+        # Assuming you have a form with input names corresponding to question numbers
+        responses = {int(key): int(value) for key, value in request.form.items()}
+
+        depression_score = score_dsm5_adult_depression(responses)
+
+        return render_template('dsm5_adult_depression_result.html', depression=depression_score)
 
 if __name__ == '__main__':
     app.run(debug=True)
