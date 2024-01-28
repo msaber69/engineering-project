@@ -1,13 +1,38 @@
-// Test3.tsx
 import React, { useState } from 'react';
 import questions from '../questions';
 import '../styles/Survey.css'; // Update the path based on your project structure
 
+interface Answers {
+  [key: string]: string;
+}
+
 const Test3: React.FC = () => {
-  const [answers, setAnswers] = useState<{ [key: string]: string }>({});
+  const [answers, setAnswers] = useState<Answers>({});
 
   const handleAnswerChange = (questionId: string, value: string) => {
     setAnswers((prevAnswers) => ({ ...prevAnswers, [questionId]: value }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/submitTest', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(answers),
+      });
+
+      if (response.ok) {
+        console.log('User responses submitted successfully');
+        const result = await response.json();
+        console.log('Scoring Result:', result);
+      } else {
+        console.error('Failed to submit user responses');
+      }
+    } catch (error) {
+      console.error('Error submitting user responses:', error);
+    }
   };
 
   return (
@@ -32,7 +57,7 @@ const Test3: React.FC = () => {
             ))}
           </div>
         ))}
-      <button onClick={() => console.log(answers)}>Submit Test 1</button>
+      <button onClick={handleSubmit}>Submit Test 3</button>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import pandas as pd
 import sys
 import json
+import os
 
 def create_dataframes(form_data):
     # Parse the JSON-formatted form data
@@ -11,83 +12,61 @@ def create_dataframes(form_data):
         return
     
     # Define column names for each DataFrame
-    adhd_columns = ['Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q11', 'Q12', 'Q13', 'Q14', 'Q15', 'Q16', 'Q17', 'Q18']
-    anxiety_columns = ['Q24', 'Q25', 'Q26']
-    mania_columns = ['Q22', 'Q23']
-    anger_columns = ['Q21']
-    psychosis_columns = ['Q30', 'Q31']
-    somatic_columns = ['Q27', 'Q28']
-    substance_use_columns = ['Q33', 'Q34', 'Q35']
-    suicidal_columns = ['Q29']
-    did_columns = ['Q32']
-    depression_columns = ['Q19', 'Q20']
-    dep_qids_columns = ['QSR1', 'QSR2', 'QSR3', 'QSR4', 'QSR5', 'QSR6', 'QSR7', 'QSR8', 'QSR9', 'QSR10', 'QSR11', 'QSR12', 'QSR13', 'QSR15', 'QSR16']
-    
-    # Create dictionaries to hold the responses for each question
-    adhd_responses = {}
-    anxiety_responses = {}
-    mania_responses = {}
-    anger_responses = {}
-    psychosis_responses = {}
-    somatic_responses = {}
-    substance_use_responses = {}
-    suicidal_responses = {}
-    did_responses = {}
-    depression_responses = {}
-    dep_qids_responses = {}
+    columns_mapping = {
+        'ADHD': ['Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q11', 'Q12', 'Q13', 'Q14', 'Q15', 'Q16', 'Q17', 'Q18'],
+        'Anxiety': ['Q24', 'Q25', 'Q26'],
+        'Mania': ['Q22', 'Q23'],
+        'Anger': ['Q21'],
+        'Psychosis': ['Q30', 'Q31'],
+        'Somatic': ['Q27', 'Q28'],
+        'Substance_Use': ['Q33', 'Q34', 'Q35'],
+        'Suicidal': ['Q29'],
+        'DID': ['Q32'],
+        'Depression': ['Q19', 'Q20'],
+        'Dep_QIDS': ['QSR1', 'QSR2', 'QSR3', 'QSR4', 'QSR5', 'QSR6', 'QSR7', 'QSR8', 'QSR9', 'QSR10', 'QSR11', 'QSR12', 'QSR13', 'QSR15', 'QSR16']
+    }
 
-    # Iterate over form data responses
-    for question_id, selected_option in form_data_dict.items():
-        # Check the question ID and add the selected option to the appropriate dictionary
-        if question_id in adhd_columns:
-            adhd_responses[question_id] = selected_option
-        elif question_id in anxiety_columns:
-            anxiety_responses[question_id] = selected_option
-        elif question_id in mania_columns:
-            mania_responses[question_id] = selected_option
-        elif question_id in anger_columns:
-            anger_responses[question_id] = selected_option
-        elif question_id in psychosis_columns:
-            psychosis_responses[question_id] = selected_option
-        elif question_id in somatic_columns:
-            somatic_responses[question_id] = selected_option
-        elif question_id in substance_use_columns:
-            substance_use_responses[question_id] = selected_option
-        elif question_id in suicidal_columns:
-            suicidal_responses[question_id] = selected_option
-        elif question_id in did_columns:
-            did_responses[question_id] = selected_option
-        elif question_id in depression_columns:
-            depression_responses[question_id] = selected_option
-        elif question_id in dep_qids_columns:
-            dep_qids_responses[question_id] = selected_option
-    
-    # Create DataFrames from the dictionaries
-    input_variables_ADHD = pd.DataFrame(adhd_responses, index=[0])
-    input_variables_Anxiety = pd.DataFrame(anxiety_responses, index=[0])
-    input_variables_MANIA = pd.DataFrame(mania_responses, index=[0])
-    input_variables_ANGER = pd.DataFrame(anger_responses, index=[0])
-    input_variables_PSYCHOSIS = pd.DataFrame(psychosis_responses, index=[0])
-    input_variables_SOMATIC = pd.DataFrame(somatic_responses, index=[0])
-    input_variables_SUBSTANCE_USE = pd.DataFrame(substance_use_responses, index=[0])
-    input_variables_SUICIDAL = pd.DataFrame(suicidal_responses, index=[0])
-    input_variables_DID = pd.DataFrame(did_responses, index=[0])
-    input_variables_Depression = pd.DataFrame(depression_responses, index=[0])
-    input_variables_DEP_QIDS = pd.DataFrame(dep_qids_responses, index=[0])
+    # Path to the directory containing CSV files
+    csv_directory = '../pythonApi/inputFiles/'
 
-    # Write DataFrames to CSV files
-    input_variables_ADHD.to_csv('../pythonApi/inputFiles/input_variables_ADHD.csv', index=False)
-    input_variables_Anxiety.to_csv('../pythonApi/inputFiles/input_variables_Anxiety.csv', index=False)
-    input_variables_MANIA.to_csv('../pythonApi/inputFiles/input_variables_MANIA.csv', index=False)
-    input_variables_ANGER.to_csv('../pythonApi/inputFiles/input_variables_ANGER.csv', index=False)
-    input_variables_PSYCHOSIS.to_csv('../pythonApi/inputFiles/input_variables_PSYCHOSIS.csv', index=False)
-    input_variables_SOMATIC.to_csv('../pythonApi/inputFiles/input_variables_SOMATIC.csv', index=False)
-    input_variables_SUBSTANCE_USE.to_csv('../pythonApi/inputFiles/input_variables_SUBSTANCE_USE.csv', index=False)
-    input_variables_SUICIDAL.to_csv('../pythonApi/inputFiles/input_variables_SUICIDAL.csv', index=False)
-    input_variables_DID.to_csv('../pythonApi/inputFiles/input_variables_DID.csv', index=False)
-    input_variables_Depression.to_csv('../pythonApi/inputFiles/input_variables_Depression.csv', index=False)
-    input_variables_DEP_QIDS.to_csv('../pythonApi/inputFiles/input_variables_DEP_QIDS.csv', index=False)
-    
+    # Iterate over each type of data and its columns
+    for data_type, columns in columns_mapping.items():
+        # Construct the CSV file path
+        csv_file = os.path.join(csv_directory, f'input_variables_{data_type}.csv')
+
+        # Check if there are any responses for the current dataframe
+        if any(form_data_dict.get(col) for col in columns):
+            # Check if the CSV file exists and contains data
+            if os.path.isfile(csv_file) and os.path.getsize(csv_file) > 0:
+                # Read existing data from CSV file
+                try:
+                    existing_data = pd.read_csv(csv_file)
+                    
+                    # Check if the form data matches the existing data
+                    form_data_match = True
+                    for col in columns:
+                        if form_data_dict.get(col) != existing_data[col].iloc[0]:
+                            form_data_match = False
+                            break
+                    
+                    if form_data_match:
+                        print("Form data matches existing data. Updating...")
+                        # Update existing row with form data
+                        existing_data.iloc[0] = form_data_dict
+                        existing_data.to_csv(csv_file, index=False)
+                    else:
+                        print("Form data does not match existing data. Appending...")
+                        # Append new row with form data
+                        new_data = pd.DataFrame([form_data_dict], columns=columns)
+                        existing_data = existing_data.append(new_data, ignore_index=True)
+                        existing_data.to_csv(csv_file, index=False)
+                        
+                except pd.errors.EmptyDataError:
+                    print(f"Warning: Empty or invalid CSV file found for {data_type}")
+            else:
+                # If CSV file doesn't exist or is empty, create new file and write new data
+                new_data = pd.DataFrame([form_data_dict], columns=columns)
+                new_data.to_csv(csv_file, index=False)
 
 if __name__ == "__main__":
     # Read form data from standard input

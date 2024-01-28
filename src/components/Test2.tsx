@@ -1,7 +1,6 @@
-// Test2.tsx
 import React, { useState } from 'react';
 import questions from '../questions';
-import '../styles/Survey.css'; // Update the path based on your project structure
+import '../styles/Survey.css'; 
 
 interface Answers {
   [key: string]: string;
@@ -14,28 +13,14 @@ const Test2: React.FC = () => {
     setAnswers((prevAnswers) => ({ ...prevAnswers, [questionId]: value }));
   };
 
-  const handleSubmit = () => {
-    // Assuming you have a function to handle the submission
-    submitTest(answers);
-  };
-
-  const submitTest = async (answers: Answers) => {
+  const handleSubmit = async () => {
     try {
-      // Extract question IDs and selected option IDs
-      const responseArray = Object.entries(answers).map(([questionId, selectedOption]) => ({
-        questionId,
-        selectedOption,
-      }));
-
       const response = await fetch('http://localhost:3001/submitTest', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          testType: 'test2', // Assuming 'test2' is the correct test type
-          responses: responseArray,
-        }),
+        body: JSON.stringify(answers),
       });
 
       if (response.ok) {

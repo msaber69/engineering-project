@@ -1,17 +1,17 @@
 import pandas as pd
 
 # Similarly, import other DataFrames from CSV files
-input_variables_ADHD = pd.read_csv("inputFiles/input_variables_ADHD.csv")
-input_variables_Anxiety = pd.read_csv("inputFiles/input_variables_Anxiety.csv")
-input_variables_MANIA = pd.read_csv("inputFiles/input_variables_MANIA.csv")
-input_variables_ANGER = pd.read_csv("inputFiles/input_variables_ANGER.csv")
-input_variables_PSYCHOSIS = pd.read_csv("inputFiles/input_variables_PSYCHOSIS.csv")
-input_variables_SOMATIC = pd.read_csv("inputFiles/input_variables_SOMATIC.csv")
-input_variables_SUBSTANCE_USE = pd.read_csv("inputFiles/input_variables_SUBSTANCE_USE.csv")
-input_variables_SUICIDAL = pd.read_csv("inputFiles/input_variables_SUICIDAL.csv")
-input_variables_DID = pd.read_csv("inputFiles/input_variables_DID.csv")
-input_variables_Depression = pd.read_csv("inputFiles/input_variables_Depression.csv")
-input_variables_DEP_QIDS = pd.read_csv("inputFiles/input_variables_DEP_QIDS.csv")
+input_variables_ADHD = pd.read_csv("../pythonApi/inputFiles/input_variables_ADHD.csv")
+input_variables_Anxiety = pd.read_csv("../pythonApi/inputFiles/input_variables_Anxiety.csv")
+input_variables_MANIA = pd.read_csv("../pythonApi/inputFiles/input_variables_MANIA.csv")
+input_variables_ANGER = pd.read_csv("../pythonApi/inputFiles/input_variables_ANGER.csv")
+input_variables_PSYCHOSIS = pd.read_csv("../pythonApi/inputFiles/input_variables_PSYCHOSIS.csv")
+input_variables_SOMATIC = pd.read_csv("../pythonApi/inputFiles/input_variables_SOMATIC.csv")
+input_variables_SUBSTANCE_USE = pd.read_csv("../pythonApi/inputFiles/input_variables_SUBSTANCE_USE.csv")
+input_variables_SUICIDAL = pd.read_csv("../pythonApi/inputFiles/input_variables_SUICIDAL.csv")
+input_variables_DID = pd.read_csv("../pythonApi/inputFiles/input_variables_DID.csv")
+input_variables_Depression = pd.read_csv("../pythonApi/inputFiles/input_variables_Depression.csv")
+input_variables_DEP_QIDS = pd.read_csv("../pythonApi/inputFiles/input_variables_DEP_QIDS.csv")
 
 
 # Functions
