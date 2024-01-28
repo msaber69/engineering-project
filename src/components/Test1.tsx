@@ -1,4 +1,3 @@
-// Test1.tsx
 import React, { useState } from 'react';
 import questions from '../questions';
 import '../styles/Survey.css';
@@ -10,46 +9,25 @@ const Test1: React.FC = () => {
     setAnswers((prevAnswers) => ({ ...prevAnswers, [questionId]: value }));
   };
 
-  interface Answers {
-    [questionId: string]: string; 
-  };
-
-  const handleSubmit = async (answers: Answers) => {
+  const handleSubmit = async () => {
     try {
-      // Extract question IDs and selected option IDs
-      const responseArray = Object.entries(answers).map(([questionId, selectedOption]) => ({
-        questionId,
-        selectedOption,
-      }));
-  
       const response = await fetch('http://localhost:3001/submitTest', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                testType: 'test1',
-                responses: responseArray,
-            }),
-        });
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(answers),
+      });
 
-        if (response.ok) {
-            console.log('User responses submitted successfully');
-            const result = await response.json();
-            console.log('Scoring Result:', result);
-
-            // Interpret the result and update your UI as needed
-            // For example, you can display the scores in the UI
-            alert(`ADHD Score: ${result.result[0].Final_ADHD_score}`);
-        } else {
-            console.error('Failed to submit user responses');
-        }
+      if (response.ok) {
+        console.log('User responses submitted successfully');
+      } else {
+        console.error('Failed to submit user responses');
+      }
     } catch (error) {
-        console.error('Error submitting user responses:', error);
+      console.error('Error submitting user responses:', error);
     }
-};
-  
-  
+  };
 
   return (
     <div className="test-container">
@@ -73,7 +51,7 @@ const Test1: React.FC = () => {
             ))}
           </div>
         ))}
-      <button onClick={() => handleSubmit(answers)}>Submit Test 1</button>
+      <button onClick={handleSubmit}>Submit Test 1</button>
     </div>
   );
 };
