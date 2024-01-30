@@ -1,20 +1,6 @@
 import joblib
 from app import (
-    Final_ADHD_scores, 
-    Inattention_scores, 
-    Hyperactivity_scores, 
-    Final_ADHD_percentages, 
-    Inattention_percentages, 
-    Hyperactivity_percentages,
-    Final_DEPRESSION_percentage_list,
-    Final_ANXIETY_percentage_list,
-    Final_MANIA_percentage_list,
-    Final_ANGER_percentage_list,
-    Final_PSYCHOSIS_percentage_list,
-    Final_SOMATIC_SYMP_percentage_list,
-    Final_SUICIDAL_percentage_list,
-    Final_DISSOCIATION_percentage_list,
-    Final_SUBSTANCE_USE_percentage_list,
+    adhd_final, inattention, hyperactivity, mania_final, anxiety_final, depression_final, anger_final, psychosis_final, somatic_final, substance_use_final, suicidal_final, dissociative_final, depression_sr_final, 
     input_variables_ADHD,
     input_variables_Depression,
     input_variables_DID,
@@ -29,37 +15,37 @@ from app import (
 )
 
 # Load ADHD model
-ADHD_BestModel_Oversampling = joblib.load("models/ADHD_BestModel_Oversampling.sav")
+ADHD_BestModel_Oversampling = joblib.load("../pythonApi/models/ADHD_BestModel_Oversampling.sav")
 
 # Load ANGER model
-ANGER_BestModel_Oversampling = joblib.load("models/ANGER_BestModel_Oversampling.sav")
+ANGER_BestModel_Oversampling = joblib.load("../pythonApi/models/ANGER_BestModel_Oversampling.sav")
 
 # Load ANXIETY model
-ANXIETY_BestModel_Oversampling = joblib.load("models/ANXIETY_BestModel_Oversampling.sav")
+ANXIETY_BestModel_Oversampling = joblib.load("../pythonApi/models/ANXIETY_BestModel_Oversampling.sav")
 
 # Load DEPRESSION model
-DEPRESSION_BestModel_Oversampling = joblib.load("models/DEPRESSION_BestModel_Oversampling.sav")
+DEPRESSION_BestModel_Oversampling = joblib.load("../pythonApi/models/DEPRESSION_BestModel_Oversampling.sav")
 
 # Load DEP_QIDS16 model
-DEP_QIDS16_BestModel_Oversampling = joblib.load("models/DEP_QIDS16_BestModel_Oversampling.sav")
+DEP_QIDS16_BestModel_Oversampling = joblib.load("../pythonApi/models/DEP_QIDS16_BestModel_Oversampling.sav")
 
 # Load DISSOCIATION model
-DISSOCIATION_BestModel_Oversampling = joblib.load("models/DISSOCIATION_BestModel_Oversampling.sav")
+DISSOCIATION_BestModel_Oversampling = joblib.load("../pythonApi/models/DISSOCIATION_BestModel_Oversampling.sav")
 
 # Load MANIA model
-MANIA_BestModel_Oversampling = joblib.load("models/MANIA_BestModel_Oversampling.sav")
+MANIA_BestModel_Oversampling = joblib.load("../pythonApi/models/MANIA_BestModel_Oversampling.sav")
 
 # Load PSYCHOSIS model
-PSYCHOSIS_BestModel_Oversampling = joblib.load("models/PSYCHOSIS_BestModel_Oversampling.sav")
+PSYCHOSIS_BestModel_Oversampling = joblib.load("../pythonApi/models/PSYCHOSIS_BestModel_Oversampling.sav")
 
 # Load SOMATIC_SYMP model
-SOMATIC_SYMP_BestModel_Oversampling = joblib.load("models/SOMATIC_SYMP_BestModel_Oversampling.sav")
+SOMATIC_SYMP_BestModel_Oversampling = joblib.load("../pythonApi/models/SOMATIC_SYMP_BestModel_Oversampling.sav")
 
 # Load SUBSTANCE_USE model
-SUBSTANCE_USE_BestModel_Oversampling = joblib.load("models/SUBSTANCE_USE_BestModel_Oversampling.sav")
+SUBSTANCE_USE_BestModel_Oversampling = joblib.load("../pythonApi/models/SUBSTANCE_USE_BestModel_Oversampling.sav")
 
 # Load SUICIDAL model
-SUICIDAL_BestModel_Oversampling = joblib.load("models/SUICIDAL_BestModel_Oversampling.sav")
+SUICIDAL_BestModel_Oversampling = joblib.load("../pythonApi/models/SUICIDAL_BestModel_Oversampling.sav")
 
 
 # SECTION 1: RESULTS
@@ -69,49 +55,49 @@ print("These are the results of the test you've taken.")
 
 # ADHD/ADD disorder
 print("* ADHD/ADD disorder:")
-print("   - Final attention-deficit/hyperactivity disorder percentage:", Final_ADHD_percentages)
-print("   - Inattentive (ADD) symptoms percentage:", Inattention_percentages)
-print("   - Hyperactive-Impulsive(ADHD)symptoms percentage:", Hyperactivity_percentages)
+print("   - Final attention-deficit/hyperactivity disorder percentage:", adhd_final)
+print("   - Inattentive (ADD) symptoms percentage:", inattention)
+print("   - Hyperactive-Impulsive(ADHD)symptoms percentage:", hyperactivity)
 
 # Major Depressive Disorder
 print("* Major Depressive Disorder:")
-print("   - Final Depression percentage:", Final_DEPRESSION_percentage_list)
+print("   - Final Depression percentage:", depression_final)
 
 # Anxiety Disorder
 print("* Anxiety Disorder:")
-print("   - Final Anxiety percentage:", Final_ANXIETY_percentage_list)
+print("   - Final Anxiety percentage:", anxiety_final)
 
 # Manic Episodes
 print("* Manic Episodes:")
-print("   - Final Mania percentage:", Final_MANIA_percentage_list)
+print("   - Final Mania percentage:", mania_final)
 
 # Anger Episodes
 print("* Anger Episodes:")
-print("   - Final Anger percentage:", Final_ANGER_percentage_list)
+print("   - Final Anger percentage:", anger_final)
 
 # Generalized Anxiety Disorder
 print("* Generalized Anxiety Disorder:")
-print("   - Final Mania percentage:", Final_MANIA_percentage_list)
+print("   - Final Mania percentage:", mania_final)
 
 # Psychosis
 print("* Psychosis:")
-print("   - Final Psychosis percentage:", Final_PSYCHOSIS_percentage_list)
+print("   - Final Psychosis percentage:", psychosis_final)
 
 # Somatic symptoms
 print("* Somatic symptoms:")
-print("   - Final Somatic symptoms percentage:", Final_SOMATIC_SYMP_percentage_list)
+print("   - Final Somatic symptoms percentage:", somatic_final)
 
 # Suicidal ideation
 print("* Suicidal ideation:")
-print("   - Final Suicidal ideation percentage:", Final_SUICIDAL_percentage_list)
+print("   - Final Suicidal ideation percentage:", suicidal_final)
 
 # Dissociative Identity Disorder (DID)
 print("* Dissociative Identity Disorder (DID):")
-print("   - Dissociative Identity Disorder (DID) percentage:", Final_DISSOCIATION_percentage_list)
+print("   - Dissociative Identity Disorder (DID) percentage:", dissociative_final)
 
 # Substance Use Disorder
 print("* Substance Use Disorder:")
-print("   - Substance Use Disorder percentage:", Final_SUBSTANCE_USE_percentage_list)
+print("   - Substance Use Disorder percentage:", substance_use_final)
 
 
 # SECTION 2: Tentative Diagnosis

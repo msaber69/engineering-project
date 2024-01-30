@@ -1,17 +1,74 @@
 import pandas as pd
+import joblib
+import sklearn
 
-# Similarly, import other DataFrames from CSV files
-input_variables_ADHD = pd.read_csv("../pythonApi/inputFiles/input_variables_ADHD.csv")
-input_variables_Anxiety = pd.read_csv("../pythonApi/inputFiles/input_variables_Anxiety.csv")
-input_variables_MANIA = pd.read_csv("../pythonApi/inputFiles/input_variables_MANIA.csv")
-input_variables_ANGER = pd.read_csv("../pythonApi/inputFiles/input_variables_ANGER.csv")
-input_variables_PSYCHOSIS = pd.read_csv("../pythonApi/inputFiles/input_variables_PSYCHOSIS.csv")
-input_variables_SOMATIC = pd.read_csv("../pythonApi/inputFiles/input_variables_SOMATIC.csv")
-input_variables_SUBSTANCE_USE = pd.read_csv("../pythonApi/inputFiles/input_variables_SUBSTANCE_USE.csv")
-input_variables_SUICIDAL = pd.read_csv("../pythonApi/inputFiles/input_variables_SUICIDAL.csv")
-input_variables_DID = pd.read_csv("../pythonApi/inputFiles/input_variables_DID.csv")
-input_variables_Depression = pd.read_csv("../pythonApi/inputFiles/input_variables_Depression.csv")
-input_variables_DEP_QIDS = pd.read_csv("../pythonApi/inputFiles/input_variables_DEP_QIDS.csv")
+
+# ADHD
+input_variables_ADHD = pd.DataFrame([[1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2]],
+                                    columns=['Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q11', 'Q12', 'Q13', 'Q14', 'Q15', 'Q16', 'Q17', 'Q18'],
+                                    dtype=float,
+                                    index=['input'])
+
+# Anxiety
+input_variables_Anxiety = pd.DataFrame([[2, 3, 4]],
+                                        columns=['Q24', 'Q25', 'Q26'],
+                                        dtype=float,
+                                        index=['input'])
+
+# MANIA
+input_variables_MANIA = pd.DataFrame([[4, 3]],
+                                      columns=['Q22', 'Q23'],
+                                      dtype=float,
+                                      index=['input'])
+
+# ANGER
+input_variables_ANGER = pd.DataFrame([[2]],
+                                      columns=['Q21'],
+                                      dtype=float,
+                                      index=['input'])
+
+# PSYCHOSIS
+input_variables_PSYCHOSIS = pd.DataFrame([[3, 4]],
+                                          columns=['Q30', 'Q31'],
+                                          dtype=float,
+                                          index=['input'])
+
+# SOMATIC SYMPTOMS
+input_variables_SOMATIC = pd.DataFrame([[1, 2]],
+                                       columns=['Q27', 'Q28'],
+                                       dtype=float,
+                                       index=['input'])
+
+# SUBSTANCE USE
+input_variables_SUBSTANCE_USE = pd.DataFrame([[3, 4, 1]],
+                                              columns=['Q33', 'Q34', 'Q35'],
+                                              dtype=float,
+                                              index=['input'])
+
+# SUICIDAL
+input_variables_SUICIDAL = pd.DataFrame([[1]],
+                                         columns=['Q29'],
+                                         dtype=float,
+                                         index=['input'])
+
+# DISSOCIATIVE IDENTITY DISORDER (DID)
+input_variables_DID = pd.DataFrame([[2]],
+                                    columns=['Q32'],
+                                    dtype=float,
+                                    index=['input'])
+
+# Depression
+input_variables_Depression = pd.DataFrame([[4, 3]],
+                                          columns=['Q19', 'Q20'],
+                                          dtype=float,
+                                          index=['input'])
+
+# DEPRESSION_QIDS
+input_variables_DEP_QIDS = pd.DataFrame([[2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4]],
+                                        columns=['QSR1', 'QSR2', 'QSR3', 'QSR4', 'QSR5', 'QSR6', 'QSR7', 'QSR8', 'QSR9', 'QSR10', 'QSR11', 'QSR12', 'QSR13', 'QSR15', 'QSR16'],
+                                        dtype=float,
+                                        index=['input'])
+
 
 
 # Functions
@@ -27,27 +84,27 @@ def compute_final_score_ADHD(data):
     for idx, row in data.iterrows():
         ## Scoring all the 18 questions:
         # Conditions for Q1, Q2, Q3, Q9, Q12, Q16, and Q18
-        condition_1 = (row['Q1'] > 2).astype(int) + (row['Q2'] > 2).astype(int) + (row['Q3'] > 2).astype(int) + (row['Q9'] > 2).astype(int) + (row['Q12'] > 2).astype(int) + (row['Q16'] > 2).astype(int) + (row['Q18'] > 2).astype(int)
+        condition_1 = int(row['Q1'] > 2) + int(row['Q2'] > 2) + int(row['Q3'] > 2) + int(row['Q9'] > 2) + int(row['Q12'] > 2) + int(row['Q16'] > 2) + int(row['Q18'] > 2)
 
         # Conditions for Q4, Q5, Q6, Q7, Q8, Q10, Q11, Q13, Q14, Q15, Q17
-        condition_2 = (row['Q4'] > 3).astype(int) + (row['Q5'] > 3).astype(int) + (row['Q6'] > 3).astype(int) + (row['Q7'] > 3).astype(int) + (row['Q8'] > 3).astype(int) + (row['Q10'] > 3).astype(int) + (row['Q11'] > 3).astype(int) + (row['Q13'] > 3).astype(int) + (row['Q14'] > 3).astype(int) + (row['Q15'] > 3).astype(int) + (row['Q17'] > 3).astype(int)
+        condition_2 = int(row['Q4'] > 3) + int(row['Q5'] > 3) + int(row['Q6'] > 3) + int(row['Q7'] > 3) + int(row['Q8'] > 3) + int(row['Q10'] > 3) + int(row['Q11'] > 3) + int(row['Q13'] > 3) + int(row['Q14'] > 3) + int(row['Q15'] > 3) + int(row['Q17'] > 3)
 
         ## Differentiate between ADD (Inattention) and ADHD (Inattention+hyper):
         # 1. Inattention
 
         # Conditions for Q1,Q2,Q3,Q9
-        condition_3 = (row['Q1'] > 2).astype(int) + (row['Q2'] > 2).astype(int) + (row['Q3'] > 2).astype(int) + (row['Q9'] > 2).astype(int)
+        condition_3 = int(row['Q1'] > 2) + int(row['Q2'] > 2) + int(row['Q3'] > 2) + int(row['Q9'] > 2)
 
         # Conditions for Q4,Q7,Q8,Q10,Q11
-        condition_4 = (row['Q4'] > 3).astype(int) + (row['Q7'] > 3).astype(int) + (row['Q8'] > 3).astype(int) + (row['Q10'] > 3).astype(int) + (row['Q11'] > 3).astype(int)
+        condition_4 = int(row['Q4'] > 3) + int(row['Q7'] > 3) + int(row['Q8'] > 3) + int(row['Q10'] > 3) + int(row['Q11'] > 3)
 
         # 2. Hyper
 
         # Conditions for Q12,Q16,Q18
-        condition_5 = (row['Q12'] > 2).astype(int) + (row['Q16'] > 2).astype(int) + (row['Q18'] > 2).astype(int)
+        condition_5 = int(row['Q12'] > 2) + int(row['Q16'] > 2) + int(row['Q18'] > 2)
 
         # Conditions for Q5,Q6,Q13,Q14,Q15,Q17
-        condition_6 = (row['Q5'] > 3).astype(int) + (row['Q6'] > 3).astype(int) + (row['Q13'] > 3).astype(int) + (row['Q14'] > 3).astype(int) + (row['Q15'] > 3).astype(int) + (row['Q17'] > 3).astype(int)
+        condition_6 = int(row['Q5'] > 3) + int(row['Q6'] > 3) + int(row['Q13'] > 3) + int(row['Q14'] > 3) + int(row['Q15'] > 3) + int(row['Q17'] > 3)
 
         # Calculate the final score of ADHD for the current row
         final_score = condition_1 + condition_2
@@ -84,10 +141,10 @@ def compute_final_score_MANIA(data):
     for idx, row in data.iterrows():
         ## Scoring the 2 questions:
         # Conditions for Q22 and Q23
-        condition_1 = (row['Q22'] >= 2).astype(int) + (row['Q23'] >= 2).astype(int) 
+        condition_1 = int(row['Q22'] >= 2) + int(row['Q23'] >= 2)
         
         # Conditions for Q22 and Q23
-        condition_2 = (row['Q22']).astype(int) + (row['Q23']).astype(int) 
+        condition_2 = int(row['Q22']) + int(row['Q23'])
         
         # Calculate the final score of MANIA for the current row
         Final_MANIA_score = condition_2
@@ -116,10 +173,10 @@ def compute_final_score_ANXIETY(data):
     for idx, row in data.iterrows():
         ## Scoring the 3 questions:
         # Conditions for Q24,Q25 and Q26
-        condition_1 = (row['Q24'] >= 2).astype(int) + (row['Q25'] >= 2).astype(int) + (row['Q26'] >= 2).astype(int) 
+        condition_1 = int(row['Q24'] >= 2) + int(row['Q25'] >= 2) + int(row['Q26'] >= 2)
         
         # Conditions for Q24,Q25 and Q26
-        condition_2 = (row['Q24']).astype(int) + (row['Q25']).astype(int) + (row['Q26']).astype(int) 
+        condition_2 = int(row['Q24']) + int(row['Q25']) + int(row['Q26'])
         
         # Calculate the final score of Anxiety for the current row
         Final_ANXIETY_score = condition_2
@@ -148,10 +205,10 @@ def compute_final_score_DEPRESSION(data):
     for idx, row in data.iterrows():
         ## Scoring the 2 questions:
         # Conditions for Q19 and Q20
-        condition_1 = (row['Q19'] >= 2).astype(int) + (row['Q20'] >= 2).astype(int) 
+        condition_1 = int(row['Q19'] >= 2) + int(row['Q20'] >= 2)
         
         # Conditions for Q19 and Q20
-        condition_2 = (row['Q19']).astype(int) + (row['Q20']).astype(int)
+        condition_2 = int(row['Q19']) + int(row['Q20'])
         
         # Calculate the final score of Depression for the current row
         Final_DEPRESSION_score = condition_2
@@ -180,10 +237,10 @@ def compute_final_score_ANGER(data):
     for idx, row in data.iterrows():
         ## Scoring 1 question:
         # Conditions for Q21
-        condition_1 = (row['Q21'] >= 2).astype(int)
+        condition_1 = int(row['Q21'] >= 2)
         
         # Conditions for Q21
-        condition_2 = (row['Q21']).astype(int) 
+        condition_2 = int(row['Q21'])
         
         # Calculate the final score of ANGER for the current row
         Final_ANGER_score = condition_2
@@ -212,10 +269,10 @@ def compute_final_score_PSYCHOSIS(data):
     for idx, row in data.iterrows():
         ## Scoring 2 questions:
         # Conditions for Q30 and Q31
-        condition_1 = (row['Q31'] >= 1).astype(int)+ (row['Q30'] >= 1).astype(int)
+        condition_1 = int(row['Q31'] >= 1)+ int(row['Q30'] >= 1)
         
         # Conditions for Q30 and Q31
-        condition_2 = (row['Q31']).astype(int)+ (row['Q30']).astype(int)
+        condition_2 = int(row['Q31'])+ int(row['Q30'])
         
         # Calculate the final score of PSYCHOSIS for the current row
         Final_PSYCHOSIS_score = condition_2
@@ -244,10 +301,10 @@ def compute_final_score_SOMATIC_SYMP(data):
     for idx, row in data.iterrows():
         ## Scoring 2 questions:
         # Conditions for Q27 and Q28
-        condition_1 = (row['Q27'] >= 2).astype(int)+ (row['Q28'] >= 2).astype(int)
+        condition_1 = int(row['Q27'] >= 2)+ int(row['Q28'] >= 2)
         
         # Conditions for Q27 and Q28
-        condition_2 = (row['Q27']).astype(int)+ (row['Q28']).astype(int)
+        condition_2 = int(row['Q27'])+ int(row['Q28'])
         
         # Calculate the final score of SOMATIC_SYMP for the current row
         Final_SOMATIC_SYMP_score = condition_2
@@ -276,10 +333,10 @@ def compute_final_score_SUBSTANCE_USE(data):
     for idx, row in data.iterrows():
         ## Scoring 3 questions:
         # Conditions for Q33, Q34 and Q35 
-        condition_1 = (row['Q33'] >= 1).astype(int)+ (row['Q34'] >= 1).astype(int) + (row['Q35'] >= 1).astype(int)
+        condition_1 = int(row['Q33'] >= 1)+ int(row['Q34'] >= 1) + int(row['Q35'] >= 1)
         
         # Conditions for Q33, Q34 and Q35
-        condition_2 = (row['Q33']).astype(int)+ (row['Q34']).astype(int) + (row['Q35']).astype(int)
+        condition_2 = int(row['Q33'])+ int(row['Q34']) + int(row['Q35'])
         
         # Calculate the final score of SUBSTANCE_USE for the current row
         Final_SUBSTANCE_USE_score = condition_2
@@ -308,10 +365,10 @@ def compute_final_score_SUICIDAL(data):
     for idx, row in data.iterrows():
         ## Scoring 1 question:
         # Conditions for Q29 
-        condition_1 = (row['Q29'] >= 1).astype(int)
+        condition_1 = int(row['Q29'] >= 1)
         
         # Conditions for Q29
-        condition_2 = (row['Q29']).astype(int)
+        condition_2 = int(row['Q29'])
         
         # Calculate the final score of SUICIDAL for the current row
         Final_SUICIDAL_score = condition_2
@@ -340,10 +397,10 @@ def compute_final_score_DISSOCIATION(data):
     for idx, row in data.iterrows():
         ## Scoring 1 question:
         # Conditions for Q32 
-        condition_1 = (row['Q32'] >= 2).astype(int)
+        condition_1 = int(row['Q32'] >= 2)
         
         # Conditions for Q32
-        condition_2 = (row['Q32']).astype(int)
+        condition_2 = int(row['Q32'])
         
         # Calculate the final score of Dissociative for the current row
         Final_DISSOCIATION_score = condition_2
@@ -406,20 +463,245 @@ def compute_final_score_Depression_SR(data):
 
 if __name__ == "__main__":
     # Load data
-    test1_data = pd.read_csv("dataset/Mental_health_dataset.csv")  
-    test2_data = pd.read_csv("dataset/DATASET_ADHD.csv")  
-    test3_data = pd.read_csv("dataset/QIDS_SR16.csv")  
+    test1_data = pd.read_csv("../pythonApi/dataset/Mental_health_dataset.csv")  
+    test2_data = pd.read_csv("../pythonApi/dataset/Mental_health_dataset.csv")  
+    test3_data = pd.read_csv("../pythonApi/dataset/QIDS_SR16.csv")  
 
-    # Example usage of compute_final_score_ADHD
+    # Compute final scores using all functions
+
+    # ADHD scores
     adhd_final, inattention, hyperactivity = compute_final_score_ADHD(test1_data)
-    print("ADHD Final Scores:", adhd_final)
-    print("Inattention Scores:", inattention)
-    print("Hyperactivity Scores:", hyperactivity)
 
-    # Example usage of compute_final_score_MANIA
-    mania_final = compute_final_score_MANIA(test2_data)
-    print("Mania Final Scores:", mania_final)
+    # Mania scores
+    mania_final = compute_final_score_MANIA(test1_data)
 
-    # Example usage of compute_final_score_Depression_SR
+    # Anxiety scores
+    anxiety_final = compute_final_score_ANXIETY(test1_data)
+
+    # Depression scores
+    depression_final = compute_final_score_DEPRESSION(test1_data)
+
+    # Anger scores
+    anger_final = compute_final_score_ANGER(test1_data)
+
+    # Psychosis scores
+    psychosis_final = compute_final_score_PSYCHOSIS(test1_data)
+
+    # Somatic symptom scores
+    somatic_final = compute_final_score_SOMATIC_SYMP(test1_data)
+
+    # Substance use scores
+    substance_use_final = compute_final_score_SUBSTANCE_USE(test1_data)
+
+    # Suicidal scores
+    suicidal_final = compute_final_score_SUICIDAL(test1_data)
+
+    # Dissociative scores
+    dissociative_final = compute_final_score_DISSOCIATION(test1_data)
+
+    # Depression SR scores
     depression_sr_final = compute_final_score_Depression_SR(test3_data)
-    print("Depression_SR Final Scores:", depression_sr_final)
+    print("scikit-learn version:", sklearn.__version__)
+
+
+    
+# Load ADHD model
+ADHD_BestModel_Oversampling = joblib.load("../pythonApi/models/ADHD_BestModel_Oversampling.sav")
+
+# Load ANGER model
+ANGER_BestModel_Oversampling = joblib.load("../pythonApi/models/ANGER_BestModel_Oversampling.sav")
+
+# Load ANXIETY model
+ANXIETY_BestModel_Oversampling = joblib.load("../pythonApi/models/ANXIETY_BestModel_Oversampling.sav")
+
+# Load DEPRESSION model
+DEPRESSION_BestModel_Oversampling = joblib.load("../pythonApi/models/DEPRESSION_BestModel_Oversampling.sav")
+
+# Load DEP_QIDS16 model
+DEP_QIDS16_BestModel_Oversampling = joblib.load("../pythonApi/models/DEP_QIDS16_BestModel_Oversampling.sav")
+
+# Load DISSOCIATION model
+DISSOCIATION_BestModel_Oversampling = joblib.load("../pythonApi/models/DISSOCIATION_BestModel_Oversampling.sav")
+
+# Load MANIA model
+MANIA_BestModel_Oversampling = joblib.load("../pythonApi/models/MANIA_BestModel_Oversampling.sav")
+
+# Load PSYCHOSIS model
+PSYCHOSIS_BestModel_Oversampling = joblib.load("../pythonApi/models/PSYCHOSIS_BestModel_Oversampling.sav")
+
+# Load SOMATIC_SYMP model
+SOMATIC_SYMP_BestModel_Oversampling = joblib.load("../pythonApi/models/SOMATIC_SYMP_BestModel_Oversampling.sav")
+
+# Load SUBSTANCE_USE model
+SUBSTANCE_USE_BestModel_Oversampling = joblib.load("../pythonApi/models/SUBSTANCE_USE_BestModel_Oversampling.sav")
+
+# Load SUICIDAL model
+SUICIDAL_BestModel_Oversampling = joblib.load("../pythonApi/models/SUICIDAL_BestModel_Oversampling.sav")
+
+
+# SECTION 1: RESULTS
+
+# For the test 1: Mental Health Assessment
+print("These are the results of the test you've taken.")
+
+# ADHD/ADD disorder
+print("* ADHD/ADD disorder:")
+print("   - Final attention-deficit/hyperactivity disorder percentage:", adhd_final)
+print("   - Inattentive (ADD) symptoms percentage:", inattention)
+print("   - Hyperactive-Impulsive(ADHD)symptoms percentage:", hyperactivity)
+
+# Major Depressive Disorder
+print("* Major Depressive Disorder:")
+print("   - Final Depression percentage:", depression_final)
+
+# Anxiety Disorder
+print("* Anxiety Disorder:")
+print("   - Final Anxiety percentage:", anxiety_final)
+
+# Manic Episodes
+print("* Manic Episodes:")
+print("   - Final Mania percentage:", mania_final)
+
+# Anger Episodes
+print("* Anger Episodes:")
+print("   - Final Anger percentage:", anger_final)
+
+# Generalized Anxiety Disorder
+print("* Generalized Anxiety Disorder:")
+print("   - Final Mania percentage:", mania_final)
+
+# Psychosis
+print("* Psychosis:")
+print("   - Final Psychosis percentage:", psychosis_final)
+
+# Somatic symptoms
+print("* Somatic symptoms:")
+print("   - Final Somatic symptoms percentage:", somatic_final)
+
+# Suicidal ideation
+print("* Suicidal ideation:")
+print("   - Final Suicidal ideation percentage:", suicidal_final)
+
+# Dissociative Identity Disorder (DID)
+print("* Dissociative Identity Disorder (DID):")
+print("   - Dissociative Identity Disorder (DID) percentage:", dissociative_final)
+
+# Substance Use Disorder
+print("* Substance Use Disorder:")
+print("   - Substance Use Disorder percentage:", substance_use_final)
+
+
+# SECTION 2: Tentative Diagnosis
+
+# For the test 1: Mental Health Assessment
+print("\nThese are the results you'll show in this section according to the type of the test:")
+
+# Get the model's prediction for each condition
+
+# for ADHD
+prediction_ADHD = ADHD_BestModel_Oversampling.predict(input_variables_ADHD)[0]
+if prediction_ADHD == 0: 
+    diag_ADHD = "You have Predominantly Inattentive (ADD) symptoms"
+elif prediction_ADHD == 1: 
+    diag_ADHD = "You have Predominantly Hyperactive-Impulsive(ADHD) symptoms"
+elif prediction_ADHD == 2: 
+    diag_ADHD = "You have Combined Inattentive and Hyperactive-Impulsive (ADHD) symptoms"
+else: 
+    diag_ADHD = "You have no ADHD nor ADD symptoms"
+
+# for Depression
+prediction_Dep = DEPRESSION_BestModel_Oversampling.predict(input_variables_Depression)[0]
+if prediction_Dep == 0: 
+    diag_Dep = "You are likely to be depressed"
+else: 
+    diag_Dep = "You are less likely to be depressed"
+
+# for Dissociative Identity Disorder
+prediction_did = DISSOCIATION_BestModel_Oversampling.predict(input_variables_DID)[0]
+if prediction_did == 0: 
+    diag_did = "You are likely showing high level of Dissociative Identity Disorder symptoms"
+else: 
+    diag_did = "You are not having Dissociative Identity Disorder symptoms"
+
+# for Mania
+prediction_mania = MANIA_BestModel_Oversampling.predict(input_variables_MANIA)[0]
+if prediction_mania == 0: 
+    diag_man = "You have likely a manic or hypomanic condition"
+else: 
+    diag_man = "You are less likely to be associated with significant symptoms of mania"
+
+# for Anger
+prediction_ang = ANGER_BestModel_Oversampling.predict(input_variables_ANGER)[0]
+if prediction_ang == 0: 
+    diag_ang = "You are likely to have anger issues"
+else: 
+    diag_ang = "You are less likely to be associated with significant symptoms of anger"
+
+# for Anxiety
+prediction_anx = ANXIETY_BestModel_Oversampling.predict(input_variables_Anxiety)[0]
+if prediction_anx == 0: 
+    diag_anx = "You have an elevated level of anxiety"
+else: 
+    diag_anx = "Your level of anxiety is not high"
+
+# for Suicidal
+prediction_suic = SUICIDAL_BestModel_Oversampling.predict(input_variables_SUICIDAL)[0]
+if prediction_suic == 1: 
+    diag_suic = "You are showing high level of suicidal ideation"
+else: 
+    diag_suic = "You are not having suicidal ideation"
+
+# for Psychosis
+prediction_psy = PSYCHOSIS_BestModel_Oversampling.predict(input_variables_PSYCHOSIS)[0]
+if prediction_psy == 1: 
+    diag_psy = "You are likely showing high level of psychosis symptoms"
+else: 
+    diag_psy = "You are not having psychosis symptoms"
+
+# for Somatic
+prediction_som = SOMATIC_SYMP_BestModel_Oversampling.predict(input_variables_SOMATIC)[0]
+if prediction_som == 1: 
+    diag_som = "You are likely showing high level of somatic symptoms"
+else: 
+    diag_som = "You are not having somatic symptoms"
+
+# for Substance Use
+prediction_sub = SUBSTANCE_USE_BestModel_Oversampling.predict(input_variables_SUBSTANCE_USE)[0]
+if prediction_sub == 1: 
+    diag_sub = "You are likely showing high level of substance use disorder symptoms"
+else: 
+    diag_sub = "You are not having substance use disorder symptoms"
+
+# for DEPRESSION_QIDS_16 (SPECIFIC DEPRESSION TEST)
+prediction_DEP_QIDS = DEP_QIDS16_BestModel_Oversampling.predict(input_variables_DEP_QIDS)[0]
+if prediction_DEP_QIDS == 0: 
+    diag_DEP_QIDS = "You have mild depression symptoms"
+elif prediction_DEP_QIDS == 1: 
+    diag_DEP_QIDS = "You have moderate depression symptoms"
+elif prediction_DEP_QIDS == 2: 
+    diag_DEP_QIDS = "You have no depression symptoms"
+else: 
+    diag_DEP_QIDS = "You have severe and very severe depression symptoms"
+
+# Output the diagnosis based on the predictions for each condition
+
+# For the test 1: Mental Health Assessment
+print("# For the test 1: Mental Health Assessment")
+print("   - Diagnosis for ADHD:", diag_ADHD)
+print("   - Diagnosis for Depression:", diag_Dep)
+print("   - Diagnosis for Dissociative Identity Disorder:", diag_did)
+print("   - Diagnosis for Mania:", diag_man)
+print("   - Diagnosis for Anger:", diag_ang)
+print("   - Diagnosis for Anxiety:", diag_anx)
+print("   - Diagnosis for Suicidal:", diag_suic)
+print("   - Diagnosis for Psychosis:", diag_psy)
+print("   - Diagnosis for Somatic symptoms:", diag_som)
+print("   - Diagnosis for Substance Use Disorder:", diag_sub)
+
+# For the test 2: ADHD/ADD
+print("\n# For the test 2: ADHD/ADD")
+print("   - Diagnosis for ADHD:", diag_ADHD)
+
+# For the test 3: Depression
+print("\n# For the test 3: Depression")
+print("   - Diagnosis for Depression:", diag_DEP_QIDS)

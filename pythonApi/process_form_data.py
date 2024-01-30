@@ -36,36 +36,26 @@ def create_dataframes(form_data):
 
         # Check if there are any responses for the current dataframe
         if any(form_data_dict.get(col) for col in columns):
+            # Append new row with form data
+            new_data = pd.DataFrame([form_data_dict], columns=columns)
+            
             # Check if the CSV file exists and contains data
             if os.path.isfile(csv_file) and os.path.getsize(csv_file) > 0:
                 # Read existing data from CSV file
                 try:
                     existing_data = pd.read_csv(csv_file)
-                    
-                    # Check if the form data matches the existing data
-                    form_data_match = True
-                    for col in columns:
-                        if form_data_dict.get(col) != existing_data[col].iloc[0]:
-                            form_data_match = False
-                            break
-                    
-                    if form_data_match:
-                        print("Form data matches existing data. Updating...")
-                        # Update existing row with form data
-                        existing_data.iloc[0] = form_data_dict
-                        existing_data.to_csv(csv_file, index=False)
-                    else:
-                        print("Form data does not match existing data. Appending...")
-                        # Append new row with form data
-                        new_data = pd.DataFrame([form_data_dict], columns=columns)
-                        existing_data = existing_data.append(new_data, ignore_index=True)
-                        existing_data.to_csv(csv_file, index=False)
-                        
+                    # Append new row with form data
+                    existing_data = pd.concat([existing_data, new_data], ignore_index=True)
+                    existing_data.to_csv(csv_file, index=False)
                 except pd.errors.EmptyDataError:
                     print(f"Warning: Empty or invalid CSV file found for {data_type}")
+                    # Initialize existing_data as an empty DataFrame
+                    existing_data = pd.DataFrame(columns=columns)
+                    # Append new row with form data
+                    existing_data = pd.concat([existing_data, new_data], ignore_index=True)
+                    existing_data.to_csv(csv_file, index=False)
             else:
                 # If CSV file doesn't exist or is empty, create new file and write new data
-                new_data = pd.DataFrame([form_data_dict], columns=columns)
                 new_data.to_csv(csv_file, index=False)
 
 if __name__ == "__main__":
@@ -75,5 +65,5 @@ if __name__ == "__main__":
     # Debugging: Print form data to inspect its contents
     print("Form Data:", form_data)
 
-    # Create DataFrames and write to CSV files
+    # Create DataFrames and append to CSV files
     create_dataframes(form_data)

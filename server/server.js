@@ -39,7 +39,7 @@ app.post('/submitTest', (req, res) => {
     const formData = req.body;
 
     // Spawn a Python process to execute the script with the form data as JSON
-    const pythonProcess = spawn('python3', ['../pythonApi/process_form_data.py']);
+    const pythonProcess = spawn('python3', ['../pythonApi/app.py']);
 
     // Send the form data as JSON to the Python script's stdin
     pythonProcess.stdin.write(JSON.stringify(formData));
