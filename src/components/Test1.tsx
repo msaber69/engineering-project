@@ -11,7 +11,7 @@ const Test1: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch('http://localhost:3001/submitTest', {
+      const response = await fetch('http://localhost:3001/submitTest1', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,9 +42,9 @@ const Test1: React.FC = () => {
                   type="radio"
                   id={`${question.id}-${index}`}
                   name={question.id}
-                  value={option}
-                  checked={answers[question.id] === option}
-                  onChange={() => handleOptionChange(question.id, option)}
+                  value={index + 1} // Assign values as 1, 2, 3, 4 instead of option text
+                  checked={answers[question.id] === String(index + 1)}
+                  onChange={() => handleOptionChange(question.id, String(index + 1))}
                 />
                 <label htmlFor={`${question.id}-${index}`}>{option}</label>
               </div>

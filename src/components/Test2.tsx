@@ -1,21 +1,17 @@
 import React, { useState } from 'react';
 import questions from '../questions';
-import '../styles/Survey.css'; 
-
-interface Answers {
-  [key: string]: string;
-}
+import '../styles/Survey.css';
 
 const Test2: React.FC = () => {
-  const [answers, setAnswers] = useState<Answers>({});
+  const [answers, setAnswers] = useState<{ [key: string]: string }>({});
 
-  const handleAnswerChange = (questionId: string, value: string) => {
+  const handleOptionChange = (questionId: string, value: string) => {
     setAnswers((prevAnswers) => ({ ...prevAnswers, [questionId]: value }));
   };
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch('http://localhost:3001/submitTest', {
+      const response = await fetch('http://localhost:3001/submitTest2', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -25,8 +21,6 @@ const Test2: React.FC = () => {
 
       if (response.ok) {
         console.log('User responses submitted successfully');
-        const result = await response.json();
-        console.log('Scoring Result:', result);
       } else {
         console.error('Failed to submit user responses');
       }
@@ -48,9 +42,9 @@ const Test2: React.FC = () => {
                   type="radio"
                   id={`${question.id}-${index}`}
                   name={question.id}
-                  value={option}
-                  checked={answers[question.id] === option}
-                  onChange={() => handleAnswerChange(question.id, option)}
+                  value={index + 1} // Assign values as 1, 2, 3, 4 instead of option text
+                  checked={answers[question.id] === String(index + 1)}
+                  onChange={() => handleOptionChange(question.id, String(index + 1))}
                 />
                 <label htmlFor={`${question.id}-${index}`}>{option}</label>
               </div>

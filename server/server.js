@@ -33,8 +33,72 @@ app.post('/login', async (req, res) => {
     }
 });
 
+// Import necessary modules
+const fs = require('fs');
+const path = require('path');
+
+// Define the paths to the CSV files
+const csvFilePaths = {
+  test1: path.join(__dirname, 'test1_responses.csv'),
+  test2: path.join(__dirname, 'test2_responses.csv'),
+  test3: path.join(__dirname, 'test3_responses.csv'),
+};
+
+// Function to write data to CSV file
+const writeToCSV = (filePath, data) => {
+  // Prepare the CSV row
+  const csvRow = Object.values(data).join(',') + '\n';
+
+  // Write the row to the CSV file
+  fs.appendFile(filePath, csvRow, (err) => {
+    if (err) {
+      console.error('Error writing to CSV file:', err);
+    } else {
+      console.log('Response written to CSV file');
+    }
+  });
+};
+
+// Endpoint to handle test 1 submission
+app.post('/submitTest1', (req, res) => {
+  // Retrieve submitted data from the request body
+  const formData = req.body;
+  
+
+  // Write the form data to the test1 CSV file
+  writeToCSV(csvFilePaths.test1, formData);
+
+  // Send response
+  res.send('Test 1 form submitted successfully!');
+});
+
+// Endpoint to handle test 2 submission
+app.post('/submitTest2', (req, res) => {
+  // Retrieve submitted data from the request body
+  const formData = req.body;
+
+  // Write the form data to the test2 CSV file
+  writeToCSV(csvFilePaths.test2, formData);
+
+  // Send response
+  res.send('Test 2 form submitted successfully!');
+});
+
+// Endpoint to handle test 3 submission
+app.post('/submitTest3', (req, res) => {
+  // Retrieve submitted data from the request body
+  const formData = req.body;
+
+  // Write the form data to the test3 CSV file
+  writeToCSV(csvFilePaths.test3, formData);
+
+  // Send response
+  res.send('Test 3 form submitted successfully!');
+});
+
+
 // Endpoint to handle test submission
-app.post('/submitTest', (req, res) => {
+/*app.post('/submitTest', (req, res) => {
     // Retrieve submitted data from the request body
     const formData = req.body;
 
@@ -61,7 +125,7 @@ app.post('/submitTest', (req, res) => {
             res.status(500).json({ error: 'Internal server error' });
         }
     });
-});
+});*/
 
 // Endpoint for the home page
 app.get('/home', (req, res) => {

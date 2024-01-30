@@ -64,8 +64,8 @@ input_variables_Depression = pd.DataFrame([[4, 3]],
                                           index=['input'])
 
 # DEPRESSION_QIDS
-input_variables_DEP_QIDS = pd.DataFrame([[2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4]],
-                                        columns=['QSR1', 'QSR2', 'QSR3', 'QSR4', 'QSR5', 'QSR6', 'QSR7', 'QSR8', 'QSR9', 'QSR10', 'QSR11', 'QSR12', 'QSR13', 'QSR15', 'QSR16'],
+input_variables_DEP_QIDS = pd.DataFrame([[1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4]],
+                                        columns=['QSR1', 'QSR2', 'QSR3', 'QSR4', 'QSR5', 'QSR6', 'QSR7', 'QSR8', 'QSR9', 'QSR10', 'QSR11', 'QSR12', 'QSR13', 'QSR14', 'QSR15', 'QSR16'],
                                         dtype=float,
                                         index=['input'])
 
@@ -430,13 +430,13 @@ def compute_final_score_Depression_SR(data):
     for idx, row in data.iterrows():
         ## Scoring questions:
         # Conditions for QSR1,QSR2,QSR3 and QSR4  
-        condition_1 = row[row[['QSR1', 'QSR2', 'QSR3', 'QSR4']].idxmax()]
+        condition_1 = row[['QSR1', 'QSR2', 'QSR3', 'QSR4']].max()
         
         # Conditions for QSR6,QSR7,QSR8 and QSR9
-        condition_2 = row[row[['QSR6', 'QSR7', 'QSR8', 'QSR9']].idxmax()]
+        condition_2 = row[['QSR6', 'QSR7', 'QSR8', 'QSR9']].max()
         
         # Conditions for QSR15 and QSR16
-        condition_3 = row[row[['QSR16', 'QSR15']].idxmax()]
+        condition_3 = row[['QSR16', 'QSR15']].max()
         
         # Condition for the rest of the questions
         condition_4 = (row['QSR5'])+ (row['QSR10'])+ (row['QSR11'])+ (row['QSR12'])+ (row['QSR13']) + (row['QSR14'])
@@ -459,6 +459,7 @@ def compute_final_score_Depression_SR(data):
         Final_Depression_SR_percentage_list.append(Final_Depression_SR_percentage)
     
     return Final_Depression_SR_percentage_list
+
 
 
 if __name__ == "__main__":
