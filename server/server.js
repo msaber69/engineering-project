@@ -60,7 +60,7 @@ const writeToCSV = (filePath, data) => {
 };
 
 // Endpoint to handle test 1 submission
-app.post('/submitTest1', (req, res) => {
+/*app.post('/submitTest1', (req, res) => {
   // Retrieve submitted data from the request body
   const formData = req.body;
   
@@ -70,7 +70,7 @@ app.post('/submitTest1', (req, res) => {
 
   // Send response
   res.send('Test 1 form submitted successfully!');
-});
+});*/
 
 // Endpoint to handle test 2 submission
 app.post('/submitTest2', (req, res) => {
@@ -98,7 +98,7 @@ app.post('/submitTest3', (req, res) => {
 
 
 // Endpoint to handle test submission
-/*app.post('/submitTest', (req, res) => {
+app.post('/submitTest1', (req, res) => {
     // Retrieve submitted data from the request body
     const formData = req.body;
 
@@ -125,7 +125,7 @@ app.post('/submitTest3', (req, res) => {
             res.status(500).json({ error: 'Internal server error' });
         }
     });
-});*/
+});
 
 // Endpoint for the home page
 app.get('/home', (req, res) => {

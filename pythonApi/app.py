@@ -3,72 +3,54 @@ import joblib
 import sklearn
 
 
-# ADHD
-input_variables_ADHD = pd.DataFrame([[1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2]],
-                                    columns=['Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q11', 'Q12', 'Q13', 'Q14', 'Q15', 'Q16', 'Q17', 'Q18'],
-                                    dtype=float,
+# Read test responses from CSV files
+test1_responses = pd.read_csv("../server/test1_responses.csv", header=None).iloc[0].tolist()
+test2_responses = pd.read_csv("../server/test2_responses.csv", header=None).iloc[0].tolist()
+test3_responses = pd.read_csv("../server/test3_responses.csv", header=None).iloc[0].tolist()
+
+# Replace the numbers with the responses from test1, test2, and test3
+input_variables_ADHD = pd.DataFrame([test1_responses[:18]], 
+                                    columns=['Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q11', 'Q12', 'Q13', 'Q14', 'Q15', 'Q16', 'Q17', 'Q18'], 
+                                    dtype=float, 
                                     index=['input'])
-
-# Anxiety
-input_variables_Anxiety = pd.DataFrame([[2, 3, 4]],
-                                        columns=['Q24', 'Q25', 'Q26'],
-                                        dtype=float,
-                                        index=['input'])
-
-# MANIA
-input_variables_MANIA = pd.DataFrame([[4, 3]],
-                                      columns=['Q22', 'Q23'],
-                                      dtype=float,
-                                      index=['input'])
-
-# ANGER
-input_variables_ANGER = pd.DataFrame([[2]],
-                                      columns=['Q21'],
-                                      dtype=float,
-                                      index=['input'])
-
-# PSYCHOSIS
-input_variables_PSYCHOSIS = pd.DataFrame([[3, 4]],
-                                          columns=['Q30', 'Q31'],
-                                          dtype=float,
-                                          index=['input'])
-
-# SOMATIC SYMPTOMS
-input_variables_SOMATIC = pd.DataFrame([[1, 2]],
-                                       columns=['Q27', 'Q28'],
-                                       dtype=float,
+input_variables_Anxiety = pd.DataFrame([test1_responses[23:26]], 
+                                       columns=['Q24', 'Q25', 'Q26'], 
+                                       dtype=float, 
                                        index=['input'])
-
-# SUBSTANCE USE
-input_variables_SUBSTANCE_USE = pd.DataFrame([[3, 4, 1]],
-                                              columns=['Q33', 'Q34', 'Q35'],
-                                              dtype=float,
-                                              index=['input'])
-
-# SUICIDAL
-input_variables_SUICIDAL = pd.DataFrame([[1]],
-                                         columns=['Q29'],
-                                         dtype=float,
+input_variables_MANIA = pd.DataFrame([test1_responses[21:23]], 
+                                     columns=['Q22', 'Q23'], 
+                                     dtype=float, 
+                                     index=['input'])
+input_variables_ANGER = pd.DataFrame([test1_responses[20]], 
+                                     columns=['Q21'], 
+                                     dtype=float, 
+                                     index=['input'])
+input_variables_PSYCHOSIS = pd.DataFrame([test1_responses[28:30]], 
+                                         columns=['Q30', 'Q31'], 
+                                         dtype=float, 
                                          index=['input'])
-
-# DISSOCIATIVE IDENTITY DISORDER (DID)
-input_variables_DID = pd.DataFrame([[2]],
-                                    columns=['Q32'],
-                                    dtype=float,
-                                    index=['input'])
-
-# Depression
-input_variables_Depression = pd.DataFrame([[4, 3]],
-                                          columns=['Q19', 'Q20'],
-                                          dtype=float,
-                                          index=['input'])
-
-# DEPRESSION_QIDS
-input_variables_DEP_QIDS = pd.DataFrame([[1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4]],
-                                        columns=['QSR1', 'QSR2', 'QSR3', 'QSR4', 'QSR5', 'QSR6', 'QSR7', 'QSR8', 'QSR9', 'QSR10', 'QSR11', 'QSR12', 'QSR13', 'QSR14', 'QSR15', 'QSR16'],
-                                        dtype=float,
+input_variables_SOMATIC = pd.DataFrame([test1_responses[26:28]], 
+                                       columns=['Q27', 'Q28'], 
+                                       dtype=float, 
+                                       index=['input'])
+input_variables_SUBSTANCE_USE = pd.DataFrame([test1_responses[30:33]], 
+                                             columns=['Q33', 'Q34', 'Q35'], 
+                                             dtype=float, index=['input'])
+input_variables_SUICIDAL = pd.DataFrame([test1_responses[29]], 
+                                        columns=['Q29'], 
+                                        dtype=float, 
                                         index=['input'])
-
+input_variables_DID = pd.DataFrame([test1_responses[31]], 
+                                   columns=['Q32'], 
+                                   dtype=float, 
+                                   index=['input'])
+input_variables_Depression = pd.DataFrame([test1_responses[18:20]], 
+                                          columns=['Q19', 'Q20'], 
+                                          dtype=float, index=['input'])
+input_variables_DEP_QIDS = pd.DataFrame([test3_responses], 
+                                        columns=['QSR1', 'QSR2', 'QSR3', 'QSR4', 'QSR5', 'QSR6', 'QSR7', 'QSR8', 'QSR9', 'QSR10', 'QSR11', 'QSR12', 'QSR13', 'QSR14', 'QSR15', 'QSR16'], 
+                                        dtype=float, 
+                                        index=['input'])
 
 
 # Functions
@@ -130,7 +112,7 @@ def compute_final_score_ADHD(data):
         Inattention_percentages.append(Inattention_percentage)
         Hyperactivity_percentages.append(Hyperactivity_percentage)
 
-    return Final_ADHD_percentages, Inattention_percentages, Hyperactivity_percentages
+    return final_percentage, Inattention_percentage, Hyperactivity_percentage
 
 def compute_final_score_MANIA(data):
     # Initialize empty lists to store scores for each row
@@ -162,7 +144,7 @@ def compute_final_score_MANIA(data):
         # Append the percentage for each line
         Final_MANIA_percentage_list.append(Final_MANIA_percentage)
     
-    return Final_MANIA_percentage_list
+    return Final_MANIA_percentage
 
 def compute_final_score_ANXIETY(data):
     # Initialize empty lists to store scores for each row
@@ -194,7 +176,7 @@ def compute_final_score_ANXIETY(data):
         # Append the percentage for each line
         Final_ANXIETY_percentage_list.append(Final_ANXIETY_percentage)
     
-    return Final_ANXIETY_percentage_list
+    return Final_ANXIETY_percentage 
 
 def compute_final_score_DEPRESSION(data):
     # Initialize empty lists to store scores for each row
@@ -226,7 +208,7 @@ def compute_final_score_DEPRESSION(data):
         # Append the percentage for each line
         Final_DEPRESSION_percentage_list.append(Final_DEPRESSION_percentage)
     
-    return Final_DEPRESSION_percentage_list
+    return Final_DEPRESSION_percentage 
 
 def compute_final_score_ANGER(data):
     # Initialize empty lists to store scores for each row
@@ -290,7 +272,7 @@ def compute_final_score_PSYCHOSIS(data):
         # Append the percentage for each line
         Final_PSYCHOSIS_percentage_list.append(Final_PSYCHOSIS_percentage)
     
-    return Final_PSYCHOSIS_percentage_list
+    return Final_PSYCHOSIS_percentage 
 
 def compute_final_score_SOMATIC_SYMP(data):
     # Initialize empty lists to store scores for each row
@@ -322,7 +304,7 @@ def compute_final_score_SOMATIC_SYMP(data):
         # Append the percentage for each line
         Final_SOMATIC_SYMP_percentage_list.append(Final_SOMATIC_SYMP_percentage)
     
-    return Final_SOMATIC_SYMP_percentage_list
+    return Final_SOMATIC_SYMP_percentage 
 
 def compute_final_score_SUBSTANCE_USE(data):
     # Initialize empty lists to store scores for each row
@@ -354,7 +336,7 @@ def compute_final_score_SUBSTANCE_USE(data):
         # Append the percentage for each line
         Final_SUBSTANCE_USE_percentage_list.append(Final_SUBSTANCE_USE_percentage)
     
-    return Final_SUBSTANCE_USE_percentage_list
+    return Final_SUBSTANCE_USE_percentage 
 
 def compute_final_score_SUICIDAL(data):
     # Initialize empty lists to store scores for each row
@@ -386,7 +368,7 @@ def compute_final_score_SUICIDAL(data):
         # Append the percentage for each line
         Final_SUICIDAL_percentage_list.append(Final_SUICIDAL_percentage)
     
-    return Final_SUICIDAL_percentage_list
+    return Final_SUICIDAL_percentage 
 
 def compute_final_score_DISSOCIATION(data):
     # Initialize empty lists to store scores for each row
@@ -419,7 +401,7 @@ def compute_final_score_DISSOCIATION(data):
         Final_DISSOCIATION_percentage_list.append(Final_DISSOCIATION_percentage)
 
     
-    return Final_DISSOCIATION_percentage_list
+    return Final_DISSOCIATION_percentage 
 
 def compute_final_score_Depression_SR(data):
     # Initialize empty lists to store scores for each row
@@ -458,7 +440,7 @@ def compute_final_score_Depression_SR(data):
         # Append the percentage for each line
         Final_Depression_SR_percentage_list.append(Final_Depression_SR_percentage)
     
-    return Final_Depression_SR_percentage_list
+    return Final_Depression_SR_percentage 
 
 
 

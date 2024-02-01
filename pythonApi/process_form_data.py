@@ -1,69 +1,52 @@
 import pandas as pd
 import sys
-import json
 import os
 
-def create_dataframes(form_data):
-    # Parse the JSON-formatted form data
-    try:
-        form_data_dict = json.loads(form_data)
-    except json.JSONDecodeError as e:
-        print("Error decoding JSON:", e)
-        return
-    
-    # Define column names for each DataFrame
-    columns_mapping = {
-        'ADHD': ['Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q11', 'Q12', 'Q13', 'Q14', 'Q15', 'Q16', 'Q17', 'Q18'],
-        'Anxiety': ['Q24', 'Q25', 'Q26'],
-        'Mania': ['Q22', 'Q23'],
-        'Anger': ['Q21'],
-        'Psychosis': ['Q30', 'Q31'],
-        'Somatic': ['Q27', 'Q28'],
-        'Substance_Use': ['Q33', 'Q34', 'Q35'],
-        'Suicidal': ['Q29'],
-        'DID': ['Q32'],
-        'Depression': ['Q19', 'Q20'],
-        'Dep_QIDS': ['QSR1', 'QSR2', 'QSR3', 'QSR4', 'QSR5', 'QSR6', 'QSR7', 'QSR8', 'QSR9', 'QSR10', 'QSR11', 'QSR12', 'QSR13', 'QSR15', 'QSR16']
-    }
-
+# Define function to fill input files from test responses
+def fill_input_files():
     # Path to the directory containing CSV files
-    csv_directory = '../pythonApi/inputFiles/'
+    csv_directory = '../server/'
 
-    # Iterate over each type of data and its columns
-    for data_type, columns in columns_mapping.items():
-        # Construct the CSV file path
-        csv_file = os.path.join(csv_directory, f'input_variables_{data_type}.csv')
+    # Read test1 responses
+    test1_file = os.path.join(csv_directory, 'test1_responses.csv')
+    test1_responses = pd.read_csv(test1_file, header=None)
+    test1_responses = test1_responses.iloc[0]
 
-        # Check if there are any responses for the current dataframe
-        if any(form_data_dict.get(col) for col in columns):
-            # Append new row with form data
-            new_data = pd.DataFrame([form_data_dict], columns=columns)
-            
-            # Check if the CSV file exists and contains data
-            if os.path.isfile(csv_file) and os.path.getsize(csv_file) > 0:
-                # Read existing data from CSV file
-                try:
-                    existing_data = pd.read_csv(csv_file)
-                    # Append new row with form data
-                    existing_data = pd.concat([existing_data, new_data], ignore_index=True)
-                    existing_data.to_csv(csv_file, index=False)
-                except pd.errors.EmptyDataError:
-                    print(f"Warning: Empty or invalid CSV file found for {data_type}")
-                    # Initialize existing_data as an empty DataFrame
-                    existing_data = pd.DataFrame(columns=columns)
-                    # Append new row with form data
-                    existing_data = pd.concat([existing_data, new_data], ignore_index=True)
-                    existing_data.to_csv(csv_file, index=False)
-            else:
-                # If CSV file doesn't exist or is empty, create new file and write new data
-                new_data.to_csv(csv_file, index=False)
+    # Read test2 responses
+    test2_file = os.path.join(csv_directory, 'test2_responses.csv')
+    test2_responses = pd.read_csv(test2_file, header=None)
+    test2_responses = test2_responses.iloc[0]
 
-if __name__ == "__main__":
-    # Read form data from standard input
-    form_data = sys.stdin.read()
+    # Read test3 responses
+    test3_file = os.path.join(csv_directory, 'test3_responses.csv')
+    test3_responses = pd.read_csv(test3_file, header=None)
+    test3_responses = test3_responses.iloc[0]
+
+    # Extract responses for each input variable and create DataFrames
+    input_variables_ADHD = pd.DataFrame([test1_responses.iloc[:18]], columns=['Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q11', 'Q12', 'Q13', 'Q14', 'Q15', 'Q16', 'Q17', 'Q18'])
+    input_variables_Anxiety = pd.DataFrame([test1_responses.iloc[23:26]], columns=['Q24', 'Q25', 'Q26'])
+    input_variables_MANIA = pd.DataFrame([test1_responses.iloc[21:23]], columns=['Q22', 'Q23'])
+    input_variables_ANGER = pd.DataFrame([test1_responses.iloc[20]], columns=['Q21'])
+    input_variables_PSYCHOSIS = pd.DataFrame([test1_responses.iloc[28:30]], columns=['Q30', 'Q31'])
+    input_variables_SOMATIC = pd.DataFrame([test1_responses.iloc[26:28]], columns=['Q27', 'Q28'])
+    input_variables_SUBSTANCE_USE = pd.DataFrame([test1_responses.iloc[30:33]], columns=['Q33', 'Q34', 'Q35'])
+    input_variables_SUICIDAL = pd.DataFrame([test1_responses.iloc[29]], columns=['Q29'])
+    input_variables_DID = pd.DataFrame([test1_responses.iloc[31]], columns=['Q32'])
+    input_variables_Depression = pd.DataFrame([test1_responses.iloc[18:20]], columns=['Q19', 'Q20'])
+    input_variables_DEP_QIDS = pd.DataFrame([test3_responses], columns=['QSR1', 'QSR2', 'QSR3', 'QSR4', 'QSR5', 'QSR6', 'QSR7', 'QSR8', 'QSR9', 'QSR10', 'QSR11', 'QSR12', 'QSR13', 'QSR14', 'QSR15', 'QSR16'])
     
-    # Debugging: Print form data to inspect its contents
-    print("Form Data:", form_data)
+    # Write DataFrames to input files
+    input_variables_ADHD.to_csv(os.path.join(csv_directory, 'input_variables_ADHD.csv'), index=False)
+    input_variables_Anxiety.to_csv(os.path.join(csv_directory, 'input_variables_Anxiety.csv'), index=False)
+    input_variables_MANIA.to_csv(os.path.join(csv_directory, 'input_variables_MANIA.csv'), index=False)
+    input_variables_ANGER.to_csv(os.path.join(csv_directory, 'input_variables_ANGER.csv'), index=False)
+    input_variables_PSYCHOSIS.to_csv(os.path.join(csv_directory, 'input_variables_PSYCHOSIS.csv'), index=False)
+    input_variables_SOMATIC.to_csv(os.path.join(csv_directory, 'input_variables_SOMATIC.csv'), index=False)
+    input_variables_SUBSTANCE_USE.to_csv(os.path.join(csv_directory, 'input_variables_SUBSTANCE_USE.csv'), index=False)
+    input_variables_SUICIDAL.to_csv(os.path.join(csv_directory, 'input_variables_SUICIDAL.csv'), index=False)
+    input_variables_DID.to_csv(os.path.join(csv_directory, 'input_variables_DID.csv'), index=False)
+    input_variables_Depression.to_csv(os.path.join(csv_directory, 'input_variables_Depression.csv'), index=False)
+    input_variables_DEP_QIDS.to_csv(os.path.join(csv_directory, 'input_variables_DEP_QIDS.csv'), index=False)
 
-    # Create DataFrames and append to CSV files
-    create_dataframes(form_data)
+# Execute function to fill input files
+fill_input_files()

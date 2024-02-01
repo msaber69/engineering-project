@@ -3,7 +3,7 @@
 .hero {
     position: relative;
     height: 100vh;
-    background: url('/Users/msaber/engineering-project/5a19f81552117834eb2554495d63f13b.jpg') center/cover no-repeat; /* Updated property */
+    background: url('../../image-removebg-preview_1.png') center/cover no-repeat; /* Updated property */
     color: #fff;
     display: flex;
     align-items: center;
