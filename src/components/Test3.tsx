@@ -10,6 +10,21 @@ const Test3: React.FC = () => {
   };
 
   const handleSubmit = async () => {
+    // Check if all questions have been answered
+    const answeredQuestions = Object.keys(answers);
+    const allQuestions = questions.filter((question) => question.section === 'Test3');
+    if (answeredQuestions.length !== allQuestions.length) {
+      alert('Please answer all questions before submitting.');
+      return;
+    }
+  
+    // Check if all questions have a selected option
+    const unansweredQuestions = allQuestions.filter((question) => !answers[question.id]);
+    if (unansweredQuestions.length > 0) {
+      alert('Please select an option for all questions before submitting.');
+      return;
+    }
+  
     try {
       const response = await fetch('http://localhost:3001/submitTest3', {
         method: 'POST',
@@ -18,9 +33,11 @@ const Test3: React.FC = () => {
         },
         body: JSON.stringify(answers),
       });
-
+  
       if (response.ok) {
         console.log('User responses submitted successfully');
+        // Redirect to the survey page
+        window.location.href = '/results3'; 
       } else {
         console.error('Failed to submit user responses');
       }
@@ -28,6 +45,7 @@ const Test3: React.FC = () => {
       console.error('Error submitting user responses:', error);
     }
   };
+  
 
   return (
     <div className="test-container">

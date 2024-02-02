@@ -13,7 +13,7 @@ const Home: React.FC = () => {
                         <h1>Discover Your Mental Health Profile</h1>
                         <p>Embark on a journey of self-discovery with our quick and insightful mental health questionnaire. 
                             Start now to gain personalized insights and take a proactive step towards your well-being.</p>
-                        <Link to="/survey">Start now</Link>
+                        <Link to="/login">Start now</Link>
                     </div>
                 </section>
 

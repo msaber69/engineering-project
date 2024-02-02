@@ -2,6 +2,7 @@
 import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Layout.css';
+import logo from '../img/image-removebg-preview_1.png';
 
 interface LayoutProps {
   children: ReactNode;
@@ -11,7 +12,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="layout">
       <header>
-        <img src="/Users/msaber/engineering-project/2401705070794_.pic.jpg" alt="Your Logo" className="logo" />
+        <img src={logo} alt="Your Logo" className="logo" />
         <nav>
           <Link to="/">Home</Link>
           <Link to="/login">Sign In / Sign Up</Link>

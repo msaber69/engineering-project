@@ -1,46 +1,43 @@
-// Survey.tsx
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Survey.css';
 
-
 const Survey: React.FC = () => {
   const navigate = useNavigate();
   
-  const redirectToTest = (test: string) => {
-    navigate(`/${test.toLowerCase()}`);
+  const redirectToInfos = (testNumber: number) => {
+    navigate(`/infos/${testNumber}`);
   };
 
-  const renderTestInfo = (section: string, description: string, estimatedTime: string) => (
-    <div key={section} className="test-info">
+  const renderTestInfo = (testNumber: number, description: string, estimatedTime: string) => (
+    <div key={testNumber} className="test-info">
       <div className="test-description">
         <p>{description}</p>
       </div>
       <div className="test-buttons">
         <span>{`Estimated Time: ${estimatedTime}`}</span>
-        <button className="test-start" onClick={() => redirectToTest(section)}>Start</button>
+        <button className="test-start" onClick={() => redirectToInfos(testNumber)}>Start</button>
       </div>
     </div>
   );
 
-  const renderSectionButton = (section: string) => {
+  const renderSectionButton = (testNumber: number) => {
     let description = '';
     let estimatedTime = '';
 
     // Add descriptions and estimated times for each test
-    if (section === 'Test1') {
+    if (testNumber === 1) {
       description = 'Mental Health Assessment';
       estimatedTime = '10-15 minutes';
-    } else if (section === 'Test2') {
+    } else if (testNumber === 2) {
       description = 'ADHD/ADD Assessment';
       estimatedTime = '15-20 minutes';
-    } else if (section === 'Test3') {
+    } else if (testNumber === 3) {
       description = 'Depression Assessment';
       estimatedTime = '12-18 minutes';
     }
 
-    return renderTestInfo(section, description, estimatedTime);
+    return renderTestInfo(testNumber, description, estimatedTime);
   };
 
   const renderIntroText = () => (
@@ -58,10 +55,10 @@ const Survey: React.FC = () => {
       {renderIntroText()}
 
       <div className="section-buttons">
-        {['Test1', 'Test2', 'Test3'].map((section) => renderSectionButton(section))}
+        {[1, 2, 3].map((testNumber) => renderSectionButton(testNumber))}
       </div>
 
-      <button className="survey-submit" /*onClick={() => console.log(answers)}*/>Submit</button>
+      <button className="survey-submit">Submit</button> {/* No action needed for submit button */}
     </div>
   );
 };

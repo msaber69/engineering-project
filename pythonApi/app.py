@@ -1,12 +1,13 @@
 import pandas as pd
 import joblib
 import sklearn
+import json
 
 
 # Read test responses from CSV files
-test1_responses = pd.read_csv("../server/test1_responses.csv", header=None).iloc[0].tolist()
-test2_responses = pd.read_csv("../server/test2_responses.csv", header=None).iloc[0].tolist()
-test3_responses = pd.read_csv("../server/test3_responses.csv", header=None).iloc[0].tolist()
+test1_responses = pd.read_csv("../server/dataset_server/test1_responses.csv", header=None).iloc[0].tolist()
+test2_responses = pd.read_csv("../server/dataset_server/test2_responses.csv", header=None).iloc[0].tolist()
+test3_responses = pd.read_csv("../server/dataset_server/test3_responses.csv", header=None).iloc[0].tolist()
 
 # Replace the numbers with the responses from test1, test2, and test3
 input_variables_ADHD = pd.DataFrame([test1_responses[:18]], 
@@ -444,6 +445,8 @@ def compute_final_score_Depression_SR(data):
 
 
 
+
+
 if __name__ == "__main__":
     # Load data
     test1_data = pd.read_csv("../pythonApi/dataset/Mental_health_dataset.csv")  
@@ -485,7 +488,6 @@ if __name__ == "__main__":
     # Depression SR scores
     depression_sr_final = compute_final_score_Depression_SR(test3_data)
     print("scikit-learn version:", sklearn.__version__)
-
 
     
 # Load ADHD model
@@ -681,10 +683,88 @@ print("   - Diagnosis for Psychosis:", diag_psy)
 print("   - Diagnosis for Somatic symptoms:", diag_som)
 print("   - Diagnosis for Substance Use Disorder:", diag_sub)
 
+# Organize data into a dictionary
+results1 = {
+    "ADHD": {
+        "Final_ADHD_percentage": adhd_final,
+        "Inattention_percentage": inattention,
+        "Hyperactivity_percentage": hyperactivity
+    },
+    "Mania": {
+        "Final_Mania_percentage": mania_final
+    },
+    "Anxiety": {
+        "Final_Anxiety_percentage": anxiety_final
+    },
+    "Depression": {
+        "Final_Depression_percentage": depression_final
+    },
+    "Anger": {
+        "Final_Anger_percentage": anger_final
+    },
+    "Psychosis": {
+        "Final_Psychosis_percentage": psychosis_final
+    },
+    "Somatic_symptoms": {
+        "Final_Somatic_symptoms_percentage": somatic_final
+    },
+    "Substance_Use": {
+        "Final_Substance_Use_percentage": substance_use_final
+    },
+    "Suicidal": {
+        "Final_Suicidal_percentage": suicidal_final
+    },
+    "Dissociation": {
+        "Final_Dissociation_percentage": dissociative_final
+    },
+    "Depression_SR": {
+        "Final_Depression_SR_percentage": depression_sr_final
+    },
+    "Mental Health Assessment": {
+        "ADHD": diag_ADHD,
+        "Depression": diag_Dep,
+        "Dissociative Identity Disorder": diag_did,
+        "Mania": diag_man,
+        "Anger": diag_ang,
+        "Anxiety": diag_anx,
+        "Suicidal": diag_suic,
+        "Psychosis": diag_psy,
+        "Somatic symptoms": diag_som,
+        "Substance Use Disorder": diag_sub
+    },
+}
+
+# Write the dictionary into a JSON file
+with open("../server/dataset_server/test1_results.json", "w") as json_file:
+    json.dump(results1, json_file)
+
 # For the test 2: ADHD/ADD
 print("\n# For the test 2: ADHD/ADD")
 print("   - Diagnosis for ADHD:", diag_ADHD)
 
+results2 = {
+    "ADHD/ADD": {
+        "ADHD": diag_ADHD
+    }
+} 
+
+# Write the dictionary into a JSON file
+with open("../server/dataset_server/test2_results.json", "w") as json_file:
+    json.dump(results2, json_file)
+
+
 # For the test 3: Depression
 print("\n# For the test 3: Depression")
 print("   - Diagnosis for Depression:", diag_DEP_QIDS)
+
+results3 = {
+    "Depression": {
+        "Depression": diag_DEP_QIDS
+    }
+} 
+
+# Write the dictionary into a JSON file
+with open("../server/dataset_server/test3_results.json", "w") as json_file:
+    json.dump(results3, json_file)
+
+
