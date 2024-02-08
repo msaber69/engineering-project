@@ -54,8 +54,11 @@ const Test1: React.FC = () => {
       {questions
         .filter((question) => question.section === 'Test1')
         .map((question) => (
-          <div key={question.id} className="question">
-            <p>{question.text}</p>
+          <div key={question.id} className="question-container">
+            <div className="question">
+              <p>{question.text}</p>
+            </div>
+            <div className="options">
             {question.options?.map((option, index) => (
               <div key={index} className="radio-option">
                 <input
@@ -68,7 +71,7 @@ const Test1: React.FC = () => {
                 />
                 <label htmlFor={`${question.id}-${index}`}>{option}</label>
               </div>
-            ))}
+            ))}</div>
           </div>
         ))}
       <button onClick={handleSubmit}>Submit Test 1</button>

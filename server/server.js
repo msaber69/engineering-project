@@ -278,37 +278,6 @@ app.get('/api/test3_results', (req, res) => {
 });
 
 
-
-/*// Endpoint to handle test submission
-app.post('/parseResults', (req, res) => {
-    // Retrieve submitted data from the request body
-    const formData = req.body;
-
-    // Spawn a Python process to execute the script with the form data as JSON
-    const pythonProcess = spawn('python3', ['../pythonApi/app.py']);
-
-    // Send the form data as JSON to the Python script's stdin
-    pythonProcess.stdin.write(JSON.stringify(formData));
-    pythonProcess.stdin.end();
-
-    pythonProcess.stdout.on('data', (data) => {
-        console.log(`Python stdout: ${data}`);
-    });
-
-    pythonProcess.stderr.on('data', (data) => {
-        console.error(`Python stderr: ${data}`);
-    });
-
-    pythonProcess.on('close', (code) => {
-        console.log(`Python process exited with code ${code}`);
-        if (code === 0) {
-            res.send('Form submitted successfully!');
-        } else {
-            res.status(500).json({ error: 'Internal server error' });
-        }
-    });
-});*/
-
 // Catch-all route for non-existing endpoints
 app.use((req, res) => {
   res.status(404).json({ error: 'Resource not found' });
